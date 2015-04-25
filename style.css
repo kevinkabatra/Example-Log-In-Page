@@ -1,0 +1,770 @@
+/*
+ * Copyright (c) 2015, Kevin Kabatra
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #D9D9D9;
+}
+
+#buttonSignIn {
+    position: fixed;
+    z-index: 1;
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+    right: 7px;
+    min-height: 25px;
+    min-width: 55px;
+    height: 3%;
+    width: 3%;    
+}
+
+#buttonLogOut {
+    position: fixed;
+    z-index: 1;
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+    right: 7px;
+    min-height: 25px;
+    min-width: 60px;
+    height: 3%;
+    width: 3%; 
+}
+
+#buttonJoinUs {
+    position: absolute;
+    background: #50AA50;
+    color: #FFFFFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+}
+
+#content {
+    position: fixed;    
+    bottom: 0px;
+    left: 0px;
+    right: 0px;    
+    background-color: #D9D9D9;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0px;
+    z-index: 0;
+}
+
+#cardJoinUs {
+    position: absolute;
+    z-index: 1;
+}
+
+#cardJoinUsImage {
+    position: absolute;
+}
+
+#cardOpeningMessage {
+    min-width: 435px;
+    text-align: center;
+    top: 0px;
+    z-index: 1;
+}
+
+.card {
+    background: #FFF;
+    border-bottom: 3px solid #D4D4D4;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-top:  1px solid #E8E8E8;
+    margin: 7px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    transition: width .2s;
+    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
+}
+
+.card h1 {
+    margin: 0px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.card p {
+    margin: 0px;
+    padding: 10px;
+}
+
+#content {
+    position: fixed;    
+    bottom: 0px;
+    left: 0px;
+    right: 0px;    
+    background-color: #D9D9D9;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0px;
+    z-index: 0;
+}
+
+#cardJoinUs {
+    position: absolute;
+    z-index: 1;
+}
+
+#cardJoinUsImage {
+    position: absolute;
+}
+
+#cardOpeningMessage {
+    min-width: 435px;
+    text-align: center;
+    top: 0px;
+    z-index: 1;
+}
+
+.card {
+    background: #FFF;
+    border-bottom: 3px solid #D4D4D4;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-top:  1px solid #E8E8E8;
+    margin: 7px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    transition: width .2s;
+    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
+}
+
+.card h1 {
+    margin: 0px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.card p {
+    margin: 0px;
+    padding: 10px;
+/*
+ * Copyright (c) 2015, Kevin Kabatra
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #D9D9D9;
+}
+
+
+
+#buttonSignIn {
+    position: fixed;
+    z-index: 1;
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+    right: 7px;
+    min-height: 25px;
+    min-width: 55px;
+    height: 3%;
+    width: 3%;    
+}
+
+#buttonLogOut {
+    position: fixed;
+    z-index: 1;
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+    right: 7px;
+    min-height: 25px;
+    min-width: 60px;
+    height: 3%;
+    width: 3%; 
+}
+
+#buttonJoinUs {
+    position: absolute;
+    background: #50AA50;
+    color: #FFFFFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+}
+
+#content {
+    position: fixed;    
+    bottom: 0px;
+    left: 0px;
+    right: 0px;    
+    background-color: #D9D9D9;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0px;
+    z-index: 0;
+}
+
+#cardJoinUs {
+    position: absolute;
+    z-index: 1;
+}
+
+#cardJoinUsImage {
+    position: absolute;
+}
+
+#cardOpeningMessage {
+    min-width: 435px;
+    text-align: center;
+    top: 0px;
+    z-index: 1;
+}
+
+.card {
+    background: #FFF;
+    border-bottom: 3px solid #D4D4D4;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-top:  1px solid #E8E8E8;
+    margin: 7px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    transition: width .2s;
+    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
+}
+
+.card h1 {
+    margin: 0px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.card p {
+    margin: 0px;
+    padding: 10px;
+/*
+ * Copyright (c) 2015, Kevin Kabatra
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #D9D9D9;
+}
+
+
+
+#buttonSignIn {
+    position: fixed;
+    z-index: 1;
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+    right: 7px;
+    min-height: 25px;
+    min-width: 55px;
+    height: 3%;
+    width: 3%;    
+}
+
+#buttonLogOut {
+    position: fixed;
+    z-index: 1;
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+    right: 7px;
+    min-height: 25px;
+    min-width: 60px;
+    height: 3%;
+    width: 3%; 
+}
+
+#buttonJoinUs {
+    position: absolute;
+    background: #50AA50;
+    color: #FFFFFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;
+    margin: 0px;    
+}
+
+#content {
+    position: fixed;    
+    bottom: 0px;
+    left: 0px;
+    right: 0px;    
+    background-color: #D9D9D9;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0px;
+    z-index: 0;
+}
+
+#cardJoinUs {
+    position: absolute;
+    z-index: 1;
+}
+
+#cardJoinUsImage {
+    position: absolute;
+}
+
+#cardOpeningMessage {
+    min-width: 435px;
+    text-align: center;
+    top: 0px;
+    z-index: 1;
+}
+
+.card {
+    background: #FFF;
+    border-bottom: 3px solid #D4D4D4;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-top:  1px solid #E8E8E8;
+    margin: 7px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    transition: width .2s;
+    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
+}
+
+.card h1 {
+    margin: 0px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.card p {
+    margin: 0px;
+    padding: 10px;
+}
+
+.cardExpanding {
+    background: #FFF;
+    border-bottom: 3px solid #D4D4D4;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-top:  1px solid #E8E8E8;
+    margin: 7px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    transition: width .2s;
+    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */    
+}
+
+.cardExpanding:hover {
+    width: 300px;
+}
+
+
+.card-image {
+    width:100%;
+    height:200px;
+    padding:0px;
+    margin:0px;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+    overflow:hidden;
+}
+
+.div {    
+    padding:0px;
+    margin:0px;
+}
+
+#divMessagesContainer {
+    padding:0px;
+    margin:0px;
+    position:relative;
+    overflow:auto;
+}
+
+#disclaimer {
+    position:absolute;
+    padding:0px;
+    margin:0px;
+}
+
+#header {
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    position: fixed;
+    z-index: 1;
+    height: 7%;
+    min-height: 55px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background: #50AA50;
+    padding: 5px 0px 5px 0px;
+    border-bottom: 1px solid #CCCCCC;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+}
+
+#header_menu {    
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    padding: 0px;    
+    margin: 15px;    
+    overflow: hidden;
+    width: 80px;
+    height: 20px;
+    position: absolute;
+    left: 55px;
+    top: 2px;
+    z-index: 1;
+    transition: height 1s;
+    -webkit-transition: height 1s; /*Safari 3.1 to 6.0 */
+}
+
+#header_menu:hover {
+    height: 300px;
+}
+
+#header_menu p:hover {
+    cursor: pointer;
+}    
+
+.imageIcon {
+    width:100%;
+    height:200px;
+    padding:0px;
+    margin:0px;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+    overflow:hidden;
+    background-image:url('/assets/images/b2B_F.png');
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+#imageJoinUs {
+    position: absolute;           
+}
+
+#labelInputSubject {
+    color: #FFF;
+    position: fixed;
+    padding:0px;
+    margin:0px;    
+    top: 2%;
+}
+
+#labelInputPassword {
+    color: #FFF;
+    position: fixed;
+    padding:0px;
+    margin:0px;  
+    top: 2%;
+}
+
+#labelAccountSubject {
+    color: #FFF;
+    position: fixed;
+    padding:0px;
+    margin:0px;  
+    top: 2%;    
+}
+
+#logoHeader {
+    position: fixed;
+    left: .3%;
+    top: .7%;
+    z-index: 0;
+    width: 5%;
+    height: 7.7%;
+    min-width: 48px;
+    min-height: 58px;
+}
+
+#navigation_collapse {
+    position: absolute;
+    left: 130px;
+    top: 18px;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    visibility: hidden;    
+}
+
+#navigation_expand {
+    position: absolute;
+    left: 130px;
+    top: 18px;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    visibility: visible;    
+}
+
+#search_bar {
+    background: #50AA50;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    color: #FFF;
+    position: absolute;
+    left: 175px;
+    top: 6px;
+    width: 500px;
+    height: 30px;        
+}
+
+#search_bar_icon {
+    position: absolute;
+    left: 650px;
+    top: 7px;
+    width: 30px;
+    height: 30px;    
+}
+
+#textInputConnectMessage {
+    background: #FFF;    
+    position: absolute;
+    padding:0px;
+    margin:0px;
+    min-width: 110px;
+    min-height: 20px;
+    width: 10%;
+    height: 3%;    
+}
+
+#textInputJoinFirstName {
+    background: #FFF;
+    color: #C3C3C3;
+    position: absolute;
+    padding:0px;
+    margin:0px;
+    min-width: 110px;
+    min-height: 20px;
+    width: 10%;
+    height: 3%;
+}
+
+#textInputJoinLastName {
+    background: #FFF;
+    color: #C3C3C3;
+    position: absolute;
+    padding:0px;
+    margin:0px;
+    min-width: 110px;
+    min-height: 20px;
+    width: 10%;
+    height: 3%;
+}
+
+#textInputJoinSubject {
+    background: #FFF;
+    color: #C3C3C3;
+    position: absolute;
+    padding:0px;
+    margin:0px;
+    min-width: 110px;
+    min-height: 20px;
+    width: 10%;
+    height: 3%;
+}
+
+#textInputJoinPassword {
+    background: #FFF;
+    color: #C3C3C3;
+    position: absolute;
+    padding:0px;
+    margin:0px;
+    min-width: 110px;
+    min-height: 20px;
+    width: 10%;
+    height: 3%;
+}
+
+#textInputSubject {
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 2px solid #E8E8E8;
+    border-bottom: 3px solid #D4D4D4;
+    position: fixed;
+    padding:0px;
+    margin:0px;
+    top: 4.5%;
+    min-width: 110px;
+    width: 10%;
+}
+
+#textInputPassword {
+    background: #FFF;
+    border-top:  1px solid #E8E8E8;
+    border-left: 2px solid #E8E8E8;
+    border-right: 0px;
+    border-bottom: 3px solid #D4D4D4;
+    position: fixed;
+    padding:0px;
+    margin:0px;
+    top: 4.5%;
+    min-width: 110px;
+    width: 10%;
+}
+
+@media all and (max-width: 400px) {
+    #button_sign_in {
+        border-top:  .5px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+        border-right: 1px solid #E8E8E8;
+        border-bottom: 1.5px solid #D4D4D4;
+    }
+    
+    .card {
+        border-top:  .5px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+        border-right: 1px solid #E8E8E8;
+        border-bottom: 1.5px solid #D4D4D4;
+    }
+    
+    #label_text_input_subject {     
+    }
+    
+    #label_text_input_password {
+    }
+    
+    #logo_header {
+        left: 4px;
+        top: 4px;        
+    }
+    
+    #header {
+        border-top:  .5px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+        border-right: 1px solid #E8E8E8;
+        border-bottom: 1.5px solid #D4D4D4;        
+    }
+        
+    #text_input_subject {
+        border-top:  .5px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+        border-right: 1px solid #E8E8E8;
+        border-bottom: 1.5px solid #D4D4D4;       
+        height: 20px;
+    }
+    
+    #text_input_password {
+        border-top:  .5px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;        
+        border-bottom: 1.5px solid #D4D4D4;
+        height: 20px;
+    }
+}
