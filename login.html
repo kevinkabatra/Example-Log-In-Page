@@ -374,8 +374,9 @@
                         + ' It has been designed to be utilized across a wide' 
                         + ' range of devices (mobile phones, tablets, netbooks,' 
                         + ' laptops, and desktops) with minimum user generated'
-                        + ' resizing, panning, and scrolling. Log in for' 
-                        + ' more information.';
+                        + ' resizing, panning, and scrolling. Please log in for' 
+                        + ' more information about the systems that I designed' 
+                        + ' to support this website.';
                 //Need to repurpose
                 authorSiteExplanationText2 = 'When creating a new user, a 32' 
                         + ' character non-cryptographic key will be created.' 
@@ -396,8 +397,8 @@
             
             //If Espanol
             function setLanguageEspanol() {
-                buttonSignInText = 'Iniciar sesi&otilde;n';
-                buttonSignOutText = 'Cerrar sesi&otilde;n';
+                buttonSignInText = 'Iniciar sesión';
+                buttonSignOutText = 'Cerrar sesión';
                 cardAuthorText = 'Copyright ' + String.fromCharCode(169) 
                         + ' 2015 Kevin Kabatra - Todos los derechos' 
                         + ' reservados.';
@@ -405,18 +406,19 @@
                         + ' Github.';
                 authorSiteExplanationText = 'Este sitio web demuestra diseño' 
                         + ' web adaptativo, conocido por las siglas RWD (del' 
-                        + ' Inglés , Responsive Web Design ). El contenido del' 
+                        + ' Inglés, Responsive Web Design). El contenido del' 
                         + ' sitio web se redimensionará basado en el tamaño y' 
                         + ' la orientación broswer. Ha sido diseñado para ser' 
                         + ' utilizado en una amplia gama de dispositivos (' 
-                        + ' teléfonos móviles, tablets , netbooks , portátiles' 
-                        + ' y equipos de escritorio ) con mínimo generado por' 
-                        + ' el usuario el cambio de tamaño , panorama y el' 
-                        + 'desplazamiento. Entrar para más información.';
+                        + ' teléfonos móviles, tablets, netbooks, portátiles,' 
+                        + ' y equipos de escritorio) con mínimo generado por' 
+                        + ' el usuario el cambio de tamaño, panorama y el' 
+                        + ' desplazamiento. Por favor, iniciar sesión para' 
+                        + ' obtener más información acerca de los sistemas de' 
+                        + ' que he diseñado para apoyar esta web.';
             }
         </script>
-        
-        
+                
         <!--Script for auto authenticating subject -->
         <script>
             var authenticated = false;
@@ -985,7 +987,7 @@
                  * 435 + 7(left margin) + 7(right margin) + 2(left border) 
                  * + 2(right border) = 453
                  */
-                if(content.offsetWidth > 640) {
+                if(content.offsetWidth > 530) {
                     var mCardAuthor = document.createElement('DIV');
                     mCardAuthor.className ='card';
                     mCardAuthor.id = 'cardAuthor';
@@ -1015,7 +1017,8 @@
                     mAuthorAnchorGithubLink.id = 'authorAnchorGithubLink';
                     mAuthorAnchorGithubLink.href = 'https://github.com/' 
                             + 'kevinkabatra/Example-Log-In-Page';
-                    mAuthorAnchorGithubLink.innerHTML = authorAnchorGithubLinkText;
+                    mAuthorAnchorGithubLink.innerHTML =
+                            authorAnchorGithubLinkText;
                     mContainerAuthorText.appendChild(mAuthorAnchorGithubLink);
 
                     var mAuthorExplanation = document.createElement('P');
@@ -1026,13 +1029,15 @@
                             .createTextNode(authorSiteExplanationText);
                     mAuthorExplanation.appendChild(mTextNodeAuthorExplanation);
 
-                    setCardAuthor(mCardAuthor, mContainerAuthorText, mAuthorCopyright,
-                            mAuthorAnchorGithubLink, mAuthorExplanation);
+                    setCardAuthor(mCardAuthor, mContainerAuthorText,
+                            mAuthorCopyright, mAuthorAnchorGithubLink,
+                            mAuthorExplanation);
                 }
             }                                                    
             
-            function setCardAuthor(mCardAuthor, mContainerAuthorText, mAuthorCopyright,
-                    mAuthorAnchorGithubLink, mAuthorExplanation) {
+            function setCardAuthor(mCardAuthor, mContainerAuthorText,
+                    mAuthorCopyright, mAuthorAnchorGithubLink,
+                    mAuthorExplanation) {
                 mCardAuthor.style.minWidth = "241px";
                 mCardAuthor.style.width = ((content.offsetWidth / 2) - 21) 
                         + "px";
@@ -1331,8 +1336,5 @@
                 }
             }           
         </script>
-        
-        
-        
     </body>
 </html>
