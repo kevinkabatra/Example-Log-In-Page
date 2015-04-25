@@ -1,0 +1,1338 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="UTF-8">
+        <title>Kevin Kabatra</title>
+        <link rel="stylesheet" href="assets/styles.css"> 
+<!--
+/* 
+ * Copyright (c) 2015, Kevin Kabatra 
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<!--
+/* 
+ * The code follows the Follow Field Naming Conventions from the 
+ * AOSP (Android Open Source Project) Code Style Guidelines for Contributors :
+ *     Non-public, non-static field names start with m.
+ *     Static field names start with s.
+ *     Other fields start with a lower case letter.
+ *     Public static final fields (constants) are ALL_CAPS_WITH_UNDERSCORES
+ * Hyperlink: (too long for one line)
+ *     http://source.android.com/source/code-style
+ *     .html#follow-field-naming-conventions
+ */
+ -->
+        <!--
+        /*
+         * Script for XMLHttpRequest. XMLHttpRequest object is used to exchange
+         * data with a server.
+         */
+        -->
+        <script>
+            var activeSessionIpAddress = ''; //ip Address as reported by client
+            
+            /**
+             * Sends and processes XMLHttpRequest using POST parameters.
+             * <p>
+             * POST parameters can be sent to function via two variable types.
+             * Option 1 is to send via Javascript Array Object, option two is 
+             * to send via String.
+             * <p>
+             * <pre>
+             * {@code
+             * Example Code:
+             *     //Option 1: Send POST Parameters via Javascript Array object
+             *     var postParameters = [
+             *           "key=value",
+             *           //No ',' for last key/value pair. 
+             *           key2 + "=" + value2
+             *      ];
+             *  
+             *      //Or Option 2: Send POST Paramaters via String
+             *      //var postParameters = '['
+             *      //     + '\'key\'=>\'value\','
+             *      //     //',' must follow last key/value pair
+             *      //     + '\'' + key2 + '\'=>\'' + value2 + '\','
+             *      //     + ']';
+             *  
+             *      var url = 'http://example.com/example.php'
+             *           
+             *      xmlHttpRequest(postParameters, url);
+             *      }
+             * </pre>
+             * <p>
+             * @param {string}{object} mPostParameters string or Javascript 
+             *      Array Object.
+             * @param {string} mUrl an absolute url for the requested .php file.
+             */
+            function xmlHttpRequest(mPostParameters, mUrl) {
+                //Clear mXmlHttpRequest string
+                var mXmlHttpRequest = "";
+                
+                //Convert mPostParameters based on type
+                if(typeof mPostParameters === 'string') {
+                    //No conversion needed for string
+                    mXmlHttpRequest = mPostParameters;
+                } else if(typeof mPostParameters === 'object') {
+                    //Turn array into POST friendly string
+                    for (mLoopIteration = 0; mLoopIteration < 
+                            mPostParameters.length; mLoopIteration++) {
+                        mXmlHttpRequest += mPostParameters[mLoopIteration];
+                        //If more variables remain, add an ampersand symbol.
+                        if(mLoopIteration !== (mPostParameters.length -1)) {
+                            mXmlHttpRequest += "&";
+                        }
+                    }
+                }
+                
+                //Check for built in XMLHttpRequest Object
+		if(window.XMLHttpRequest) {
+                    //code for IE7+, Firefox, Chrome, Opera, Safari
+                    mXmlhttp = new XMLHttpRequest();
+                } else {
+                    //code for IE6, IE5
+                    mXmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                                
+                /**
+                 * When a request to a server is sent, we want to perform some
+                 * actions based on the response. The onreadystatechange event
+                 *  is triggered every time the readyState changes. The 
+                 *  readyState property holds the status of the XMLHttpRequest.
+                 *  readyStates: 
+                 *      0: request not initialized 
+                 *      1: server connection established
+                 *      2: request received 
+                 *      3: processing request 
+                 *      4: request finished and response is ready
+                 *  status:
+                 *      200: "OK"
+                 *      404: Page not found
+                 */
+                mXmlhttp.onreadystatechange = function() {
+                    if(mXmlhttp.readyState === 4 && mXmlhttp.status === 200) {
+                        console.log('response:' + mXmlhttp.responseText);
+                        switch(mXmlhttp.responseText) {
+                            case "OK: Subject added.":
+                                isSubjectAuthenticated();
+                                break;
+                        }
+                        
+                        switch(true) {
+                            //Was subject authenticated? Yes, update sessionID.
+                            case (mXmlhttp.responseText.indexOf(
+                                        'authenticate.php') >= 0):
+                                userID = mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf(':') + 1);
+                                updateSessionId(userID);
+                                break;
+                            // 1) Is response from php_cookie.php?
+                            case (mXmlhttp.responseText.indexOf(
+                                        'php_cookie.php:sessionID:empty') >= 0):
+                                setHeaderNonAuthenticated();
+                                setContentNonAuthenticated();
+                                break;
+                            case (mXmlhttp.responseText.indexOf(
+                                        'php_cookie.php:sessionID:') >= 0):
+                                sessionID = mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf(':') + 1).substr(mXmlhttp
+                                        .responseText.substr(mXmlhttp
+                                        .responseText.indexOf(':') + 1)
+                                        .indexOf(':') + 1);
+                                getActiveSessions(sessionID);
+                                break;
+                            // 2) Is response from get_active_session.php?
+                            case (mXmlhttp.responseText.indexOf(
+                                        '["ipAddress"]=>') >= 0):
+                                //Filter mXmlhttp.responseText to get userID
+                                userID = mXmlhttp.responseText
+                                        //Remove '["userID"]=>'
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["userID"]=>') + 12)
+                                        //Remove 'string(32) "'
+                                        .substr(mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["userID"]=>') + 12)
+                                        .indexOf('"') + 1, 32);
+                                //Filter mXmlhttp.responseText to get IP Address
+                                activeSessionIpAddress = mXmlhttp.responseText
+                                        //Remove '[ipAddress"]=>'
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["ipAddress"]=>') + 15)
+                                        //Remove 'string(?) "'
+                                        .substr(mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["ipAddress"]=>') + 15)
+                                        .indexOf('"') + 1)
+                                        //Remove '"'
+                                        .substr(0, mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["ipAddress"]=>') + 15)
+                                        .substr(mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["ipAddress"]=>') + 15)
+                                        .indexOf('"') + 1).indexOf('"'));
+                                getIpAddress();
+                                break;
+                            // 3) Is response from get_ip_address.php?
+                            case (mXmlhttp.responseText.indexOf(
+                                        'get_ip_address.php:')>= 0):
+                                //if strings are identical, then commence auto 
+                                //login
+                                if(mXmlhttp.responseText.substr(mXmlhttp
+                                        .responseText
+                                        .indexOf('get_ip_address.php:') + 19) 
+                                        === activeSessionIpAddress) {
+                                    //TODO: switch content to user profile
+                                    authenticated = true;
+                                    setHeaderAuthenticated(userID);
+                                    setContentAuthenticated('HOME');
+                                } else {
+                                    authenticated = false;
+                                    userID = null;
+                                    setHeaderNonAuthenticated();
+                                    setContentNonAuthenticated();
+                                }
+                                break;
+                            case (mXmlhttp.responseText.indexOf(
+                                        '["subject"]=>') >= 0):
+                                //Filter mXmlhttp.responseText to get subject
+                                subject = mXmlhttp.responseText
+                                        //Remove '["userID"]=>'
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["subject"]=>') + 13)
+                                        //Remove 'string(?) "'
+                                        .substr(mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["subject"]=>') + 13)
+                                        .indexOf('"') + 1)
+                                        //Remove '"'
+                                        .substr(0, mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["subject"]=>') + 13)
+                                        .substr(mXmlhttp.responseText
+                                        .substr(mXmlhttp.responseText
+                                        .indexOf('["subject"]=>') + 13)
+                                        .indexOf('"') + 1).indexOf('"'));
+                                
+                                var mTextNodeLabelAccountSubject = document
+                                        .createTextNode(subject);
+                                document.getElementById('labelAccountSubject')
+                                        .appendChild(
+                                        mTextNodeLabelAccountSubject);
+                                break;
+                            case (mXmlhttp.responseText.indexOf(
+                                        'php_cookie.php:setCookie') >= 0):
+                                isSubjectAuthenticated();
+                                break;
+                            case (mXmlhttp.responseText.indexOf(
+                                        'php_cookie.php:deleteCookie') >= 0):
+                                var postRequestRemoveThisSession = '['
+                                        + '\'function\'=>\'' 
+                                        + 'remove_active_session_' 
+                                        + 'removeThisSession\','
+                                        + '\'sessionID\'=>\'' + sessionID 
+                                        + '\','
+                                        + ']';
+                                xmlHttpRequest("postParameter=" 
+                                    + postRequestRemoveThisSession,
+                                    'http://kevinkabatra.ignorelist.com/'
+                                            + 'bizTwoBusiness/switchboard/' 
+                                            + 'switchboard.php');
+                                break;
+                            case (mXmlhttp.responseText.indexOf(
+                                        'remove_active_session_' 
+                                        + 'removeThisSession: ' 
+                                        + 'subject logged out') >= 0):
+                                isSubjectAuthenticated();
+                                break;
+                            case (mXmlhttp.responseText.indexOf(
+                                        'update_session_id.php') >= 0):
+                                isSubjectAuthenticated();
+                                break;
+                        }
+                    }
+                };
+
+                /** 
+                 * Specifies the type of request, the URL, and if the request
+                 * should be handled asynchronously or not.
+                 *     open(method,url,async)
+                 *     method: the type of request: GET or POST
+                 *     url: the location of the file on the server
+                 *     async: true (asynchronous) or false (synchronous) 
+                 */
+                mXmlhttp.open("POST", mUrl, true);
+
+                /**
+                 * Adds HTTP headers to the request.
+                 * setRequestHeader(header,value)
+                 *     header: specifies the header name
+                 *     value: specifies the header value 
+                 */
+                mXmlhttp.setRequestHeader("Content-type",
+                        "application/x-www-form-urlencoded");
+
+                /**
+                 * Sends the request off to the server.
+                 *     send(string)
+                 *     string: Only used for POST requests 
+                 */
+                mXmlhttp.send(mXmlHttpRequest);
+            }                        
+        </script>
+        
+        <!--Script to control content resizing-->
+        <script>
+            function getWindowInnerWidth() {
+                var windowInnerWidth = window.innerWidth 
+                        | document.documentElement.clientWidth 
+                        | document.body.clientWidth;
+                return windowInnerWidth;
+            }
+
+            function getWindowInnerHeight() {
+                var windowInnerHeight = window.innerHeight 
+                        | document.documentElement.clientHeight 
+                        | document.body.clientHeight;    
+                return windowInnerHeight;
+            }            
+            
+            window.addEventListener("resize", onResize);
+            window.addEventListener("orientationchange", onOrientationChange);
+
+            function onResize() {
+                resizeScreenContent();
+            }
+            
+            function onOrientationChange() {
+                resizeScreenContent();
+            }
+            
+            function resizeScreenContent() {
+                //isSubjectAuthenticated();
+                if(authenticated === false){
+                    setHeaderNonAuthenticated();
+                    setContentNonAuthenticated();
+                } else {
+                    setHeaderAuthenticated();
+                    setContentAuthenticated();
+                }
+            }
+        </script>
+        
+        <!--Script for translating page -->
+        <script>
+            var language = 'ENGLISH';
+
+            switch(true) {
+                case(language.indexOf('ENGLISH') >= 0):
+                    setLanguageEnglish();
+                    break;
+                case(language.search('ESPANOL') >= 0):
+                    setLanguageEspanol();
+                    break;
+                default: break;
+            }
+            
+            //If English
+            function setLanguageEnglish() {
+                buttonSignInText = 'Sign In';
+                buttonSignOutText = 'Sing Out';
+                cardAuthorText = 'Copyright ' + String.fromCharCode(169) 
+                        + ' 2015 Kevin Kabatra - All rights reserved.';
+                authorAnchorGithubLinkText = 'Source code on display at' 
+                        + ' github.';
+                authorSiteExplanationText = 'This site demonstrates Responsive' 
+                        + ' Web Design, the content of the website will resize' 
+                        + ' itself based upon the broswer size and orientation.' 
+                        + ' It has been designed to be utilized across a wide' 
+                        + ' range of devices (mobile phones, tablets, netbooks,' 
+                        + ' laptops, and desktops) with minimum user generated'
+                        + ' resizing, panning, and scrolling. Log in for' 
+                        + ' more information.';
+                //Need to repurpose
+                authorSiteExplanationText2 = 'When creating a new user, a 32' 
+                        + ' character non-cryptographic key will be created.' 
+                        + ' This key will be the primary ID of the many' 
+                        + ' databases that will manage the user\'s connection' 
+                        + ' to the website. Upon creation of a new user, a new'
+                        + ' session ID will be created, and the site will try' 
+                        + ' to store a cookie with this session ID.  The stored' 
+                        + ' cookie will be used for auto authentication, the' 
+                        + ' cookie will be cross referenced within the database'
+                        + ' using the stored session ID, the user ID, and IP'
+                        + ' Address. When those three items match, the user' 
+                        + ' will be automatically logged into the website. If' 
+                        + ' one step fails, the stored session ID is destroyed,' 
+                        + ' and the user will be returned to the log in' 
+                        + ' screen.';
+            }
+            
+            //If Espanol
+            function setLanguageEspanol() {
+                buttonSignInText = 'Iniciar sesi&otilde;n';
+                buttonSignOutText = 'Cerrar sesi&otilde;n';
+                cardAuthorText = 'Copyright ' + String.fromCharCode(169) 
+                        + ' 2015 Kevin Kabatra - Todos los derechos' 
+                        + ' reservados.';
+                authorAnchorGithubLinkText = 'El código fuente en exhibición en' 
+                        + ' Github.';
+                authorSiteExplanationText = 'Este sitio web demuestra diseño' 
+                        + ' web adaptativo, conocido por las siglas RWD (del' 
+                        + ' Inglés , Responsive Web Design ). El contenido del' 
+                        + ' sitio web se redimensionará basado en el tamaño y' 
+                        + ' la orientación broswer. Ha sido diseñado para ser' 
+                        + ' utilizado en una amplia gama de dispositivos (' 
+                        + ' teléfonos móviles, tablets , netbooks , portátiles' 
+                        + ' y equipos de escritorio ) con mínimo generado por' 
+                        + ' el usuario el cambio de tamaño , panorama y el' 
+                        + 'desplazamiento. Entrar para más información.';
+            }
+        </script>
+        
+        
+        <!--Script for auto authenticating subject -->
+        <script>
+            var authenticated = false;
+            var userID = null;
+            var sessionID = null;
+                        
+            function isSubjectAuthenticated() {
+                getSessionIdCookie();
+            }
+            isSubjectAuthenticated();
+            
+            function getIpAddress() {
+                var postRequestGetIpAddress = '['
+                        + '\'function\'=>\'getIpAddress\','
+                        + ']';
+                xmlHttpRequest("postParameter="
+                        + postRequestGetIpAddress,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'bizTwoBusiness/security/get_ip_address.php');
+            }
+            
+            function getActiveSessions($mSessionID) {
+                var postRequestGetThisActiveSession = '['
+                    + '\'function\'=>\'get_active_session_' 
+                            + 'getThisActiveSession\','
+                    + '\'sessionID\'=>\'' + $mSessionID + '\','
+                    + ']';
+
+                xmlHttpRequest("postParameter=" 
+                        + postRequestGetThisActiveSession,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'bizTwoBusiness/switchboard/switchboard.php');
+            }
+
+            function getSessionIdCookie() {
+                var postRequestPhpGetCookies = '['
+                    + '\'function\'=>\'php_cookie_getCookie\','
+                    + '\'cookie_name\'=>\'sessionID\','
+                    + ']';
+     
+                xmlHttpRequest("postParameter=" + postRequestPhpGetCookies,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'bizTwoBusiness/switchboard/switchboard.php');
+            }
+            
+            function updateSessionId() {
+                var mPostRequestUpdateSessionId = '['
+                    + '\'function\'=>\'update_session_id_updateThisSessionId\','
+                    + '\'userID\'=>\'' + userID + '\','
+                    + ']';
+     
+                xmlHttpRequest("postParameter=" + mPostRequestUpdateSessionId,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'bizTwoBusiness/switchboard/switchboard.php');                
+                
+            }
+            
+            function getSubject($mUserID) {
+                var postRequestGetThisUserId = '['
+                    + '\'function\'=>\'get_subject_' 
+                            + 'getThisSubject\','
+                    + '\'userID\'=>\'' + $mUserID + '\','
+                    + ']';
+
+                xmlHttpRequest("postParameter=" 
+                        + postRequestGetThisUserId,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'bizTwoBusiness/switchboard/switchboard.php');
+            }
+        </script>                      
+    <body>
+        <!--Script for form return false; -->
+        <script>
+            function stopFormReloadPage(mForm) {
+                if (mForm.preventDefault) {
+                    mForm.preventDefault();
+                }
+                mForm.returnValue = false; //for IE
+            }
+        </script>
+        
+        <!--Script for complete child node removal-->
+        <script>
+            function removeChildNodesAll(mNode) {
+                while (mNode.hasChildNodes()) {   
+                    mNode.removeChild(mNode.firstChild);                    
+                }
+            }            
+        </script>
+        
+        <!--Script for dynamically creating the header section-->
+        <script>            
+            function createHeader() {
+                var mHeader = document.createElement('DIV');
+                mHeader.id = 'header';
+                document.body.appendChild(mHeader);                
+            }
+            createHeader();           
+            var header = document.getElementById('header');            
+            
+            function setHeaderNonAuthenticated() {
+                removeChildNodesAll(header);
+                createFormLogIn();
+            }
+            
+            function setHeaderAuthenticated(mUserID) {
+                removeChildNodesAll(header);
+                createButtonLogOut();
+                createLabelAccountSubject();
+            }
+            
+            function createFormLogIn() {
+                var mFormLogIn = document.createElement('FORM');
+                mFormLogIn.id = 'formLogIn';
+                mFormLogIn.method = 'POST';                    
+                header.appendChild(mFormLogIn);
+                //Add onSubmit event to mFormLogIn
+                mFormLogIn = document.getElementById('formLogIn');
+                if(mFormLogIn.addEventListener) {
+                    mFormLogIn.addEventListener('submit',
+                            stopFormReloadPage, false);
+                } else if(mFormLogIn.attachEvent) {
+                    mFormLogIn.attachEvent('onSubmit', stopFormReloadPage);
+                }
+
+                var mTextInputSubject = document.createElement('INPUT');
+                mTextInputSubject.id = 'textInputSubject';
+                mTextInputSubject.type = 'text';
+                mTextInputSubject.name = 'textInputSubject';
+                mFormLogIn.appendChild(mTextInputSubject);
+
+                var mTextInputPassword = document
+                        .createElement('INPUT');
+                mTextInputPassword.id = 'textInputPassword';
+                mTextInputPassword.type = 'password';
+                mTextInputPassword.name = 'textInputPassword';
+                mFormLogIn.appendChild(mTextInputPassword);
+
+                var mButtonSignIn = document.createElement('INPUT');
+                mButtonSignIn.id = 'buttonSignIn';
+                mButtonSignIn.type = 'submit';
+                mButtonSignIn.value = buttonSignInText;
+                mFormLogIn.appendChild(mButtonSignIn);
+                //Add onClick event to mButtonSignIn
+                mButtonSignIn = document.getElementById('buttonSignIn');
+                if(mButtonSignIn.addEventListener) {
+                    mButtonSignIn.addEventListener('click',
+                            clickButtonSignIn, false);
+                } else if(mButtonSignIn.attachEvent) {
+                    mButtonSignIn.attachEvent('onClick',
+                            clickButtonSignIn);
+                }
+
+                var mLabelInputPassword = document.createElement('P');
+                mLabelInputPassword.id = 'labelInputPassword';
+
+                var mTextNodeLabelInputPassword = document
+                        .createTextNode('Password');
+                mLabelInputPassword.appendChild(mTextNodeLabelInputPassword);
+
+                mFormLogIn.appendChild(mLabelInputPassword);
+
+                var mLabelInputSubject = document.createElement('P');
+                mLabelInputSubject.id = 'labelInputSubject';
+
+                var mTextNodeLabelInputSubject = document
+                        .createTextNode('Username:');
+                mLabelInputSubject.appendChild(mTextNodeLabelInputSubject);
+
+                mFormLogIn.appendChild(mLabelInputSubject);
+                
+                setButtonSignIn();
+                setTextInputPassword();
+                setLabelInputPassword();
+                setTextInputSubject();
+                setLabelInputSubject();
+            }
+            
+            function createButtonLogOut() {
+                var mButtonLogOut = document.createElement('INPUT');
+                mButtonLogOut.id = 'buttonLogOut';
+                mButtonLogOut.type = 'submit';
+                mButtonLogOut.value = 'Log Out';
+                header.appendChild(mButtonLogOut);
+                //Add onClick event to mButtonSignIn
+                mButtonLogOut = document.getElementById('buttonLogOut');
+                if(mButtonLogOut.addEventListener) {
+                    mButtonLogOut.addEventListener('click',
+                            clickButtonLogOut, false);
+                } else if(mButtonLogOut.attachEvent) {
+                    mButtonLogOut.attachEvent('onClick',
+                            clickButtonSignIn);
+                }
+                setButtonLogOut();
+            }
+            
+            function createLabelAccountSubject() {
+                var mLabelAccountSubject = document.createElement('P');
+                mLabelAccountSubject.id = 'labelAccountSubject';
+                header.appendChild(mLabelAccountSubject);                               
+                
+                //Set subject based on mXmlhttp.responstText
+                getSubject(userID);
+                
+                setLabelAccountSubject();
+            }
+            
+            /**
+             * 
+             * @returns {undefined}
+             */
+            function setButtonSignIn() {
+                var mButtonSignIn = document.getElementById('buttonSignIn');
+                mButtonSignIn.style.top = (header.getBoundingClientRect()
+                        .bottom - mButtonSignIn.offsetHeight - 7) + 'px';
+            }            
+            
+            /**
+             * Dynamically adjusts location of text_input_password
+             * (password text box) based on size of browser.
+             */
+            function setTextInputPassword() {
+                var mTextInputPassword = document
+                        .getElementById('textInputPassword');
+                
+                var mButtonSignIn = document.getElementById('buttonSignIn');
+                
+                mTextInputPassword.style.top = (mButtonSignIn
+                        .getBoundingClientRect().top) + "px";
+                mTextInputPassword.style.left = (mButtonSignIn
+                        .getBoundingClientRect().left - mTextInputPassword
+                        .offsetWidth - 1) + "px";
+                mTextInputPassword.style.height = (mButtonSignIn.offsetHeight
+                        - 4) + 'px';
+            }
+            
+            /**
+             * Dynamically adjusts location of label_text_input_password 
+             * (label for password text box) based on size of browser.             
+             */
+            function setLabelInputPassword() {
+                var mTextInputPassword = document
+                        .getElementById('textInputPassword')
+                        .getBoundingClientRect();
+                
+                var mLabelInputPassword = document                                         
+                        .getElementById('labelInputPassword');
+                
+                mLabelInputPassword.style.left = (mTextInputPassword
+                        .left) + "px";
+                mLabelInputPassword.style.top = (mTextInputPassword.top 
+                        - mLabelInputPassword.offsetHeight - 2) + "px";
+            }            
+            
+           
+            /**
+             * Dynamically adjusts location of text_input_subject 
+             * (username text box) based on size of browser.             
+             */
+            function setTextInputSubject() {
+                var mTextInputPassword = document
+                        .getElementById('textInputPassword');
+
+                var mTextInputSubject = document
+                        .getElementById('textInputSubject');
+
+                mTextInputSubject.style.top = mTextInputPassword
+                        .getBoundingClientRect().top + "px";
+                mTextInputSubject.style.left = (mTextInputPassword
+                        .getBoundingClientRect().left - mTextInputPassword
+                        .offsetWidth - 7) + "px";
+                mTextInputSubject.style.right = (mTextInputPassword
+                        .getBoundingClientRect().right -mTextInputPassword
+                        .offsetWidth - 7) + "px";
+                mTextInputSubject.style.height = (mTextInputPassword
+                        .offsetHeight - 4) + 'px';
+            }
+
+            function setLabelInputSubject() {
+                var mTextInputSubject = document
+                        .getElementById('textInputSubject')
+                        .getBoundingClientRect();
+                
+                var mLabelInputSubject = document                                         
+                        .getElementById('labelInputSubject');
+                
+                mLabelInputSubject.style.left = (mTextInputSubject
+                        .left) + "px";
+                mLabelInputSubject.style.top = (mTextInputSubject.top 
+                        - mLabelInputSubject.offsetHeight - 2) + "px";
+            }            
+            
+            function setButtonLogOut() {
+                var mButtonLogOut = document.getElementById('buttonLogOut');
+                mButtonLogOut.style.top = (header.getBoundingClientRect()
+                        .bottom - mButtonLogOut.offsetHeight - 7) + 'px';
+            }
+            
+            function setLabelAccountSubject() {
+                var mLabelAccountSubject = document
+                        .getElementById('labelAccountSubject');
+                mLabelAccountSubject.style.top = (document
+                        .getElementById('buttonLogOut').getBoundingClientRect()
+                        .top + 2) + 'px';
+                mLabelAccountSubject.style.right = ((document
+                        .getElementById('buttonLogOut').offsetWidth 
+                         + 14)) + 'px'; 
+            }
+        </script>
+        
+        <!--Script for dynamically creating the content section. -->
+        <script>
+            function createContent() {
+                var mContent = document.createElement('DIV');
+                mContent.id = 'content';
+                document.body.appendChild(mContent);
+            }
+            createContent();
+            var content = document.getElementById('content');
+            
+            function setContentSize() {
+                content.style.width = getWindowInnerWidth() + 'px';
+                content.style.height = (getWindowInnerHeight() - header
+                        .offsetHeight) + 'px';
+                content.top = header.getBoundingClientRect().bottom + 'px';
+            }
+            setContentSize();
+            
+            function setContentNonAuthenticated() {
+                removeChildNodesAll(content);
+                setContentSize();
+                createCardOpeningMessage();
+                createCardAuthor();
+                createCardJoinUs();
+            }
+
+            function setContentAuthenticated(mContent) {
+                removeChildNodesAll(content);
+                setContentSize();
+                
+                mContent = 'CONNECT'; //remove
+                
+                switch(mContent) {
+                    case 'HOME':
+                        break;
+                    case 'PROFILE':
+                        break;
+                    case 'CONNECT':
+                        createConnect();
+                        break;
+                    case 'JOB_BOARD':
+                        break;
+                    case 'WHOLESALE':
+                        break;
+                    case 'RENTAL':
+                        break;
+                }
+            }
+            
+            function createCardOpeningMessage() {
+                //Is cardOpeningMessage appended to document? No, create.
+                if(!document.getElementById('cardOpeningMessage')) {
+                    var mCardOpeningMessage = document.createElement('DIV');
+                    mCardOpeningMessage.className = 'card';
+                    mCardOpeningMessage.id = 'cardOpeningMessage';
+                    content.appendChild(mCardOpeningMessage);
+                    
+                    var mH1 = document.createElement('H1');
+                    mCardOpeningMessage.appendChild(mH1);
+                    
+                    var mTextNode = document
+                            .createTextNode(content.offsetWidth);
+                    mH1.appendChild(mTextNode);
+                }
+                setCardOpeningMessage();
+            }
+            
+            function setCardOpeningMessage() {
+                var mCardOpeningMessage = document
+                        .getElementById('cardOpeningMessage');
+                mCardOpeningMessage.style.width = (content.offsetWidth - 20) 
+                        + "px";
+            }            
+            
+            function createCardJoinUs() {
+                //Is cardJoinUs appended to document? No, create.
+                if(!document.getElementById('cardJoinUs')) {
+                    var mCardJoinUs = document.createElement('DIV');
+                    mCardJoinUs.className = 'card';
+                    mCardJoinUs.id = 'cardJoinUs';
+                    content.appendChild(mCardJoinUs);
+                    
+                    //cardHeader
+                    var mCardHeader = document.createElement('H2');
+                    mCardJoinUs.appendChild(mCardHeader);
+                    
+                    var mTextNodeCardHeader = document
+                            .createTextNode('Free to join!');
+                    mCardHeader.appendChild(mTextNodeCardHeader);
+                    
+                    //formJoinUs
+                    var mFormJoinUs = document.createElement('FORM');
+                    mFormJoinUs.id = 'formJoinUs';
+                    mFormJoinUs.method = 'POST';
+                    mCardJoinUs.appendChild(mFormJoinUs);
+                    
+                    //Add onSubmit event to mLoginForm
+                    mFormJoinUs = document.getElementById('formJoinUs');
+                    if(mFormJoinUs.addEventListener) {
+                        mFormJoinUs.addEventListener('submit',
+                                stopFormReloadPage, false);
+                    } else if(mFormJoinUs.attachEvent) {
+                        mFormJoinUs.attachEvent('onSubmit', stopFormReloadPage);
+                    } 
+                    
+                    //textInputJoinFirstName
+                    var mTextInputJoinFirstName = document
+                            .createElement('INPUT');
+                    mTextInputJoinFirstName.id = 'textInputJoinFirstName';
+                    mTextInputJoinFirstName.type = 'text';
+                    mTextInputJoinFirstName.value = 'First Name';
+                    addEventListenerFocusBlur(mTextInputJoinFirstName,
+                            focusTextInputJoinFirstName,
+                            blurTextInputJoinFirstName);
+                    mFormJoinUs.appendChild(mTextInputJoinFirstName);
+                    
+                    //textInputJoinLastName
+                    var mTextInputJoinLastName = document
+                            .createElement('INPUT');
+                    mTextInputJoinLastName.id = 'textInputJoinLastName';
+                    mTextInputJoinLastName.type = 'text';
+                    mTextInputJoinLastName.value = 'Last Name';
+                    addEventListenerFocusBlur(mTextInputJoinLastName,
+                            focusTextInputJoinLastName,
+                            blurTextInputJoinLastName);
+                    mFormJoinUs.appendChild(mTextInputJoinLastName);
+                    
+                    //textInputJoinSubject
+                    var mTextInputJoinSubject = document
+                            .createElement('INPUT');
+                    mTextInputJoinSubject.id = 'textInputJoinSubject';
+                    mTextInputJoinSubject.type = 'text';
+                    mTextInputJoinSubject.value = 'Username or Email address';
+                    addEventListenerFocusBlur(mTextInputJoinSubject,
+                            focusTextInputJoinSubject,
+                            blurTextInputJoinSubject);
+                    mFormJoinUs.appendChild(mTextInputJoinSubject);
+                    
+                    //textInputJoinPassword
+                    var mTextInputJoinPassword = document
+                            .createElement('INPUT');
+                    mTextInputJoinPassword.id = 'textInputJoinPassword';
+                    //Will switch type when .value !=== 'Password'
+                    mTextInputJoinPassword.type = 'text';
+                    mTextInputJoinPassword.value = 'Password';
+                    addEventListenerFocusBlur(mTextInputJoinPassword,
+                            focusTextInputJoinPassword,
+                            blurTextInputJoinPassword);
+                    mFormJoinUs.appendChild(mTextInputJoinPassword);
+                    
+                    //Disclaimer
+                    var mDisclaimer = document.createElement('P');
+                    mDisclaimer.id = 'disclaimer';
+                    mFormJoinUs.appendChild(mDisclaimer);
+                    
+                    var mTextNodeDisclaimer = document
+                            .createTextNode('TODO: create disclaimer User ' 
+                            + 'Agreement, Privacy Policy');
+                    mDisclaimer.appendChild(mTextNodeDisclaimer);
+                    
+                    var mButtonJoinUs = document.createElement('INPUT');
+                    mButtonJoinUs.id = 'buttonJoinUs';
+                    mButtonJoinUs.type = 'submit';
+                    mButtonJoinUs.value = 'Join Now';
+                    mFormJoinUs.appendChild(mButtonJoinUs);
+                    //Add onClick event to mButtonJoinUs
+                    mButtonJoinUs = document.getElementById('buttonJoinUs');
+                    if(mButtonJoinUs.addEventListener) {
+                        mButtonJoinUs.addEventListener('click',
+                                clickButtonJoinUs, false);
+                    } else if(mButtonJoinUs.attachEvent) {
+                        mButtonJoinUs.attachEvent('onClick',
+                                clickButtonJoinUs);
+                    }
+                }
+                setCardJoinUs(mCardJoinUs, mFormJoinUs, mTextInputJoinFirstName,
+                        mTextInputJoinLastName, mTextInputJoinSubject, 
+                        mTextInputJoinPassword, mDisclaimer, mButtonJoinUs);
+            }
+            
+            function setCardJoinUs(mCardJoinUs, mTextInputJoinFirstName,
+                    mTextInputJoinLastName, mTextInputJoinSubject, 
+                    mTextInputJoinPassword, mDisclaimer, mButtonJoinUs) {
+                mCardJoinUs.style.minWidth = "241px";
+                
+                if(document.getElementById('cardAuthor')) {
+                    mCardJoinUs.style.width = (content.offsetWidth 
+                            - document.getElementById('cardAuthor')
+                            .offsetWidth - 28) + 'px';
+                } else {
+                    mCardJoinUs.style.width = (content.offsetWidth - 14) + 'px';
+                }
+                
+                mCardJoinUs.style.textAlign = "center";
+                mCardJoinUs.style.top = (document
+                        .getElementById('cardOpeningMessage')
+                        .offsetHeight + 7) + 'px'; 
+                mCardJoinUs.style.left = (content.offsetWidth -
+                        mCardJoinUs.offsetWidth - 14) + "px";
+
+                mTextInputJoinFirstName.style.width = ((mCardJoinUs
+                        .offsetWidth / 2) - 14) + "px";
+                mTextInputJoinFirstName.style.top = "50px";
+                mTextInputJoinFirstName.style.left = "7px"; 
+
+                mTextInputJoinLastName.style.width = ((mCardJoinUs
+                        .offsetWidth / 2) - 14) + "px";
+                mTextInputJoinLastName.style.top = "50px";
+                mTextInputJoinLastName.style.right = "7px"; 
+
+                mTextInputJoinSubject.style.width = ((mCardJoinUs
+                        .offsetWidth) - 21) + "px";
+                mTextInputJoinSubject.style.top = (mTextInputJoinFirstName
+                        .offsetHeight + 67) + "px";
+                mTextInputJoinSubject.style.left = "7px";
+                mTextInputJoinPassword.style.right = "7px";
+
+                mTextInputJoinPassword.style.width = ((mCardJoinUs
+                        .offsetWidth) - 21) + "px";
+                mTextInputJoinPassword.style.top = (mTextInputJoinFirstName
+                        .offsetHeight 
+                        + mTextInputJoinSubject.offsetHeight + 84) + "px";
+                mTextInputJoinSubject.style.left = "7px";
+                mTextInputJoinPassword.style.right = "7px"; 
+
+                mDisclaimer.style.top = (mTextInputJoinFirstName.offsetHeight 
+                        + mTextInputJoinSubject.offsetHeight 
+                        + mTextInputJoinPassword.offsetHeight + 104) 
+                        + "px";
+                mDisclaimer.style.left = "7px";
+
+                mButtonJoinUs.style.width = ((mCardJoinUs.offsetWidth) 
+                        - 21) + "px";
+                mButtonJoinUs.style.minHeight = (mTextInputJoinFirstName
+                        .offsetHeight * 2) + "px";
+                mButtonJoinUs.style.top = (mTextInputJoinFirstName
+                        .offsetHeight 
+                        + mTextInputJoinSubject.offsetHeight 
+                        + mTextInputJoinPassword.offsetHeight 
+                        + mDisclaimer.offsetHeight + 114) 
+                        + "px";
+                mButtonJoinUs.style.left = "7px";
+                mButtonJoinUs.style.right = "7px";                         
+
+                mCardJoinUs.style.minHeight = (50 
+                        + mTextInputJoinFirstName.offsetHeight + 10
+                        + mTextInputJoinLastName.offsetHeight
+                        + mTextInputJoinSubject.offsetHeight + 10
+                        + mTextInputJoinPassword.offsetHeight + 10
+                        + mDisclaimer.offsetHeight + 10
+                        + mButtonJoinUs.offsetHeight + 25) + "px";
+            }           
+            
+            function createCardAuthor() {
+                /* 
+                 * 435 + 7(left margin) + 7(right margin) + 2(left border) 
+                 * + 2(right border) = 453
+                 */
+                if(content.offsetWidth > 640) {
+                    var mCardAuthor = document.createElement('DIV');
+                    mCardAuthor.className ='card';
+                    mCardAuthor.id = 'cardAuthor';
+                    content.appendChild(mCardAuthor);
+
+                    if(content.offsetWidth > 800) {
+                        var mImageAuthor = document.createElement('IMG');
+                        mImageAuthor.id = 'imageAuthor';
+                        mImageAuthor.src = 'assets/images/me.jpg';
+                        mImageAuthor.alt = 'imageAuthor';
+                        mCardAuthor.appendChild(mImageAuthor);    
+                    }
+                    
+                    var mContainerAuthorText = document.createElement('DIV');
+                    mContainerAuthorText.id = 'containerAuthorText';
+                    mCardAuthor.appendChild(mContainerAuthorText);
+
+                    var mAuthorCopyright = document.createElement('P');
+                    mAuthorCopyright.id = 'authorCopyright';
+                    mContainerAuthorText.appendChild(mAuthorCopyright);
+
+                    var mTextNodeAuthorCopyright = document
+                            .createTextNode(cardAuthorText);
+                    mAuthorCopyright.appendChild(mTextNodeAuthorCopyright);
+
+                    var mAuthorAnchorGithubLink = document.createElement('A');
+                    mAuthorAnchorGithubLink.id = 'authorAnchorGithubLink';
+                    mAuthorAnchorGithubLink.href = 'https://github.com/' 
+                            + 'kevinkabatra/Example-Log-In-Page';
+                    mAuthorAnchorGithubLink.innerHTML = authorAnchorGithubLinkText;
+                    mContainerAuthorText.appendChild(mAuthorAnchorGithubLink);
+
+                    var mAuthorExplanation = document.createElement('P');
+                    mAuthorExplanation.id = 'authorExplanation';
+                    mContainerAuthorText.appendChild(mAuthorExplanation);
+
+                    var mTextNodeAuthorExplanation = document
+                            .createTextNode(authorSiteExplanationText);
+                    mAuthorExplanation.appendChild(mTextNodeAuthorExplanation);
+
+                    setCardAuthor(mCardAuthor, mContainerAuthorText, mAuthorCopyright,
+                            mAuthorAnchorGithubLink, mAuthorExplanation);
+                }
+            }                                                    
+            
+            function setCardAuthor(mCardAuthor, mContainerAuthorText, mAuthorCopyright,
+                    mAuthorAnchorGithubLink, mAuthorExplanation) {
+                mCardAuthor.style.minWidth = "241px";
+                mCardAuthor.style.width = ((content.offsetWidth / 2) - 21) 
+                        + "px";
+                mCardAuthor.style.height = ((content.offsetHeight 
+                        - document.getElementById('cardOpeningMessage')
+                        .offsetHeight) - 28) + "px";
+                mCardAuthor.style.left = '0px';
+                mCardAuthor.style.top = (document
+                        .getElementById('cardOpeningMessage')
+                        .offsetHeight + 7) + 'px';
+                
+                if(content.offsetWidth > 800) {
+                    var mImageAuthor = document.getElementById('imageAuthor');
+                    mImageAuthor.style.width = "40%";
+                    mImageAuthor.style.height = "95%";
+                    mImageAuthor.style.bottom = '7px';
+                    mImageAuthor.style.left = '7px';
+                    mImageAuthor.style.top = "7px";
+                    
+                    /*
+                     * Minimal acceptable margin between is 7px
+                     */
+                    if(((mCardAuthor.offsetWidth - mImageAuthor.offsetWidth 
+                            - mAuthorCopyright.offsetWidth) / 2) >= 14) {
+                        var mLeft = mImageAuthor.offsetWidth 
+                            + (mCardAuthor.offsetWidth 
+                            - mImageAuthor.offsetWidth 
+                            - mAuthorCopyright.offsetWidth) / 2;
+                    } else {
+                        var mLeft = mImageAuthor.offsetWidth + 14;
+                    }
+                } else {
+                    var mLeft = (mCardAuthor.offsetWidth 
+                            - mAuthorCopyright.offsetWidth) / 2;
+                }
+                
+                mAuthorCopyright.style.top = '0px';
+                mAuthorCopyright.style.left =  mLeft + 'px';
+                
+                mAuthorAnchorGithubLink.style.top = (mAuthorCopyright
+                        .scrollHeight) + 'px';
+                mAuthorAnchorGithubLink.style.left = mLeft + 'px';
+                
+                mAuthorExplanation.style.top = (mAuthorCopyright.scrollHeight 
+                        + mAuthorAnchorGithubLink.scrollHeight) + 'px';                
+                mAuthorExplanation.style.left = mLeft + 'px';
+            }
+            
+            function createConnect() {
+                console.log('createConnect called');
+                var mTextInputConnectMessage = document.createElement('INPUT');
+                mTextInputConnectMessage.id = 'textInputConnectMessage';
+                mTextInputConnectMessage.type = 'text';
+                content.appendChild(mTextInputConnectMessage);
+                
+                mTextInputConnectMessage.onkeydown = function(event) {
+                    event = event || window.event;
+                    if(event.keycode === 13 || event.which === 13) {
+                        console.log('captured enter press');
+                    }
+                };
+                
+                setConnect(mTextInputConnectMessage);
+                
+                var mDivMessagesContainer = document.createElement('DIV');
+                mDivMessagesContainer.id = 'divMessagesContainer';
+                content.appendChild(mDivMessagesContainer);
+                
+                var mCardMessage1 = document.createElement('DIV');
+                mCardMessage1.className = 'card';
+                mCardMessage1.id = 'message1';
+                mDivMessagesContainer.appendChild(mCardMessage1);
+                var mPMessage1 = document.createElement('P');
+                mCardMessage1.appendChild(mPMessage1);
+                var mTextNodeMessage1 = document.createTextNode('I received a message');
+                mPMessage1.appendChild(mTextNodeMessage1);
+                            
+                var mCardMessage2 = document.createElement('DIV');
+                mCardMessage2.className = 'card';
+                mCardMessage2.id = 'message2';
+                mDivMessagesContainer.appendChild(mCardMessage2);
+                var mPMessage2 = document.createElement('P');
+                mCardMessage2.appendChild(mPMessage2);
+                var mTextNodeMessage2 = document.createTextNode('I sent a message');
+                mPMessage2.appendChild(mTextNodeMessage2);
+                
+                var mCardMessage3 = document.createElement('DIV');
+                mCardMessage3.className = 'card';
+                mCardMessage3.id = 'message3';
+                mDivMessagesContainer.appendChild(mCardMessage3);
+                var mPMessage3 = document.createElement('P');
+                mCardMessage3.appendChild(mPMessage3);
+                var mTextNodeMessage3 = document.createTextNode('Testing Message Length:');
+                mPMessage3.appendChild(mTextNodeMessage3);
+                
+                var mCardMessage4 = document.createElement('DIV');
+                mCardMessage4.className = 'card';
+                mCardMessage4.id = 'message4';
+                mDivMessagesContainer.appendChild(mCardMessage4);
+                var mPMessage4 = document.createElement('P');
+                mCardMessage4.appendChild(mPMessage4);
+                var mTextNodeMessage4 = document.createTextNode('123456789112345678921234567931234567894123456795123456789612345679712345678981234657899');
+                mPMessage4.appendChild(mTextNodeMessage4);
+                
+                setDivMessagesContainer(mDivMessagesContainer, mCardMessage1, mCardMessage2, mCardMessage3, mCardMessage4);
+            }
+            
+            function setDivMessagesContainer(mDivMessagesContainer, mCardMessage1, mCardMessage2, mCardMessage3, mCardMessage4) {
+                mDivMessagesContainer.style.top = '7px';
+                mDivMessagesContainer.style.left = '14px';
+                mDivMessagesContainer.style.width = (content.offsetWidth 
+                        - 42) + 'px';
+                mDivMessagesContainer.style.height = '100px';
+                
+                mCardMessage1.style.top = '0px';
+                mCardMessage1.style.left = '0px';
+                
+                mCardMessage2.style.top = (document.getElementById('message1').offsetHeight + 7) + 'px';
+                mCardMessage2.style.right = '0px';
+                
+                mCardMessage3.style.top = (document.getElementById('message1').offsetHeight 
+                        + document.getElementById('message2').offsetHeight + 14) + 'px';
+                mCardMessage3.style.left = '0px';
+                
+                mCardMessage4.style.top = (document.getElementById('message1').offsetHeight 
+                        + document.getElementById('message2').offsetHeight 
+                        + document.getElementById('message3').offsetHeight + 21) + 'px';
+                mCardMessage4.style.left = '0px';
+            }
+                
+            function setConnect(mTextInputConnectMessage) {
+                mTextInputConnectMessage.style.top = (content.offsetHeight 
+                        - mTextInputConnectMessage.offsetHeight - 7) + 'px';
+                mTextInputConnectMessage.style.left = '14px';
+                mTextInputConnectMessage.style.width = (content.offsetWidth 
+                        - 42) + 'px';                
+            }
+        </script>
+        
+        
+        <!--Script for onClick() functions -->
+        <script>
+            /**
+             * 
+             * @type @exp;document@call;getElementById
+             */
+            function clickButtonSignIn() {
+                var textInputSubject = document
+                        .getElementById('textInputSubject');
+                var textInputPassword = document
+                        .getElementById('textInputPassword');
+                var encryptionParameters = [
+                    "subject=" + textInputSubject.value,
+                    "password=" + textInputPassword.value];
+                xmlHttpRequest(encryptionParameters, 
+                        "http://kevinkabatra.ignorelist.com/" 
+                                +"bizTwoBusiness/security/authenticate.php");
+            }
+            
+            function clickButtonLogOut() {
+                var postRequestDeleteCookie = '['
+                    + '\'function\'=>\'php_cookie_deleteCookie\','
+                    + '\'cookie_name\'=>\'sessionID\','
+                    + ']';
+
+                xmlHttpRequest("postParameter=" 
+                        + postRequestDeleteCookie,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'bizTwoBusiness/switchboard/switchboard.php');                
+            }
+            
+            /**
+             * 
+             * @returns {undefined}
+             */
+            function clickButtonJoinUs() {
+                var mTextInputJoinFirstName = document
+                        .getElementById('textInputJoinFirstName');
+                var mTextInputJoinLarstName = document
+                        .getElementById('textInputJoinLastName');
+                var mTextInputJoinSubject = document
+                        .getElementById('textInputJoinSubject');
+                var mTextInputJoinPassword = document
+                        .getElementById('textInputJoinPassword');
+                var encryptionParameters = [
+                    "firstName=" + mTextInputJoinFirstName.value,
+                    "lastName=" + mTextInputJoinLarstName.value,
+                    "subject=" + mTextInputJoinSubject.value,
+                    "password=" + mTextInputJoinPassword.value];
+                xmlHttpRequest(encryptionParameters, 
+                        'http://kevinkabatra.ignorelist.com/' 
+                        + 'bizTwoBusiness/database tools/add_subject.php');
+            }
+        </script>
+        
+        <script>
+            /**
+             * @param mNode
+             * @param mFunctionFocus
+             * @param mFunctionBlur
+             * @returns {undefined}
+             */
+            function addEventListenerFocusBlur(mNode, mFunctionFocus,
+                    mFunctionBlur) {
+                mNode.addEventListener('focus', mFunctionFocus, true);
+                mNode.addEventListener('blur', mFunctionBlur, true);
+            }
+            
+            /**
+             * 
+             * Focus and Blur functions for textInputJoinFirstName.
+             * These functions replicate the placeholder attribute, which is
+             * not available to Internet Explorer 9 and earlier versions.
+             */
+            function focusTextInputJoinFirstName() {
+                var mTextInputJoinFirstName = document
+                        .getElementById('textInputJoinFirstName');
+                mTextInputJoinFirstName.style.color = "#000000";
+                
+                if(mTextInputJoinFirstName.value === "First Name") {
+                    mTextInputJoinFirstName.value = "";
+                }
+            }
+            function blurTextInputJoinFirstName() {
+                var mTextInputJoinFirstName = document
+                        .getElementById('textInputJoinFirstName');
+                if(mTextInputJoinFirstName.value === "") {
+                    mTextInputJoinFirstName.value = "First Name";
+                    mTextInputJoinFirstName.style.color = "#C3C3C3";
+                }
+            }
+            
+            /**
+             * 
+             * Focus and Blur functions for textInputJoinLastName.
+             */
+            function focusTextInputJoinLastName() {
+                var mTextInputJoinLastName = document
+                        .getElementById('textInputJoinLastName');
+                mTextInputJoinLastName.style.color = "#000000";
+                if(mTextInputJoinLastName.value === "Last Name") {
+                    mTextInputJoinLastName.value = "";
+                }
+            }            
+            function blurTextInputJoinLastName() {
+                var mTextInputJoinLastName = document
+                        .getElementById('textInputJoinLastName');                                
+                if(mTextInputJoinLastName.value === "") {
+                    mTextInputJoinLastName.value = "Last Name";
+                    mTextInputJoinLastName.style.color = "#C3C3C3";
+                }
+            }
+
+            /**
+             * 
+             * Focus and Blur functions for textInputJoinSubject.
+             */
+            function focusTextInputJoinSubject() {
+                var mTextInputJoinSubject = document
+                        .getElementById('textInputJoinSubject');
+                mTextInputJoinSubject.style.color = "#000000";
+                if(mTextInputJoinSubject.value === "Username or Email address")
+                    {
+                    mTextInputJoinSubject.value = "";
+                }
+            }            
+            function blurTextInputJoinSubject() {
+                var mTextInputJoinSubject = document
+                        .getElementById('textInputJoinSubject');
+                if(mTextInputJoinSubject.value === "") {
+                    mTextInputJoinSubject.value = "Username or Email address";
+                    mTextInputJoinSubject.style.color = "#C3C3C3";
+                }
+            }            
+            
+            /**
+             * 
+             * Focus and Blur functions for textInputJoinPassword.
+             */
+            function focusTextInputJoinPassword() {
+                var mTextInputJoinPassword = document
+                        .getElementById('textInputJoinPassword');
+                mTextInputJoinPassword.style.color = "#000000";
+                if(mTextInputJoinPassword.value === "Password") {
+                    mTextInputJoinPassword.setAttribute('type','password');
+                    mTextInputJoinPassword.value = "";
+                }
+            }            
+            function blurTextInputJoinPassword() {
+                var mTextInputJoinPassword = document
+                        .getElementById('textInputJoinPassword');
+                if(mTextInputJoinPassword.value === "") {
+                    mTextInputJoinPassword.setAttribute('type','text');
+                    mTextInputJoinPassword.value = "Password";
+                    mTextInputJoinPassword.style.color = "#C3C3C3";
+                }
+            }           
+        </script>
+        
+        
+        
+    </body>
+</html>
