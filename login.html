@@ -362,10 +362,6 @@
             
             //If English
             function setLanguageEnglish() {
-                buttonSignInText = 'Sign In';
-                buttonSignOutText = 'Sing Out';
-                cardAuthorText = 'Copyright ' + String.fromCharCode(169) 
-                        + ' 2015 Kevin Kabatra - All rights reserved.';
                 authorAnchorGithubLinkText = 'Source code on display at' 
                         + ' github.';
                 authorSiteExplanationText = 'This site demonstrates Responsive' 
@@ -392,7 +388,20 @@
                         + ' will be automatically logged into the website. If' 
                         + ' one step fails, the stored session ID is destroyed,' 
                         + ' and the user will be returned to the log in' 
-                        + ' screen.';
+                        + ' screen.';                
+                buttonSignInText = 'Sign In';
+                buttonLogOutText = 'Sign Out';
+                buttonJoinUsText = 'Join Now';
+                cardAuthorText = 'Copyright ' + String.fromCharCode(169) 
+                        + ' 2015 Kevin Kabatra - All rights reserved.';
+                cardJoinUsText = 'Sign up to see more!';
+                cardOpeningMessageText = '';
+                labelInputSubjectText = 'Username:';
+                labelInputPasswordText = 'Password:';
+                textInputJoinFirstNameText = 'First Name';
+                textInputJoinLastNameText = 'Last Name';
+                textInputJoinSubjectText = 'Username or Email Address';
+                textInputJoinPasswordText = 'Password';
             }
             
             //If Espanol
@@ -576,7 +585,7 @@
                 mLabelInputPassword.id = 'labelInputPassword';
 
                 var mTextNodeLabelInputPassword = document
-                        .createTextNode('Password');
+                        .createTextNode(labelInputPasswordText);
                 mLabelInputPassword.appendChild(mTextNodeLabelInputPassword);
 
                 mFormLogIn.appendChild(mLabelInputPassword);
@@ -585,23 +594,57 @@
                 mLabelInputSubject.id = 'labelInputSubject';
 
                 var mTextNodeLabelInputSubject = document
-                        .createTextNode('Username:');
+                        .createTextNode(labelInputSubjectText);
                 mLabelInputSubject.appendChild(mTextNodeLabelInputSubject);
 
                 mFormLogIn.appendChild(mLabelInputSubject);
                 
-                setButtonSignIn();
-                setTextInputPassword();
-                setLabelInputPassword();
-                setTextInputSubject();
-                setLabelInputSubject();
+                setFormLogIn(mButtonSignIn, mTextInputPassword,
+                    mLabelInputPassword, mTextInputSubject, mLabelInputSubject);
+            }
+            
+            function setFormLogIn(mButtonSignIn, mTextInputPassword,
+                    mLabelInputPassword, mTextInputSubject, mLabelInputSubject)
+                    {
+                mButtonSignIn.style.top = (header.getBoundingClientRect()
+                .bottom - mButtonSignIn.offsetHeight - 7) + 'px';
+        
+                mTextInputPassword.style.top = (mButtonSignIn
+                        .getBoundingClientRect().top) + "px";
+                mTextInputPassword.style.left = (mButtonSignIn
+                        .getBoundingClientRect().left - mTextInputPassword
+                        .offsetWidth - 1) + "px";
+                mTextInputPassword.style.height = (mButtonSignIn.offsetHeight
+                        - 4) + 'px';
+                
+                mLabelInputPassword.style.left = (mTextInputPassword
+                        .getBoundingClientRect().left) + "px";
+                mLabelInputPassword.style.top = (mTextInputPassword.top 
+                        - mLabelInputPassword.offsetHeight - 2) + "px";
+                
+                mTextInputSubject.style.top = mTextInputPassword
+                        .getBoundingClientRect().top + "px";
+                mTextInputSubject.style.left = (mTextInputPassword
+                        .getBoundingClientRect().left - mTextInputPassword
+                        .offsetWidth - 7) + "px";
+                mTextInputSubject.style.right = (mTextInputPassword
+                        .getBoundingClientRect().right -mTextInputPassword
+                        .offsetWidth - 7) + "px";
+                mTextInputSubject.style.height = (mTextInputPassword
+                        .offsetHeight - 4) + 'px';
+                
+                mLabelInputSubject.style.left = (mTextInputSubject
+                        .getBoundingClientRect().left) + "px";
+                mLabelInputSubject.style.top = (mTextInputSubject.top 
+                        - mLabelInputSubject.offsetHeight - 2) + "px";
+                
             }
             
             function createButtonLogOut() {
                 var mButtonLogOut = document.createElement('INPUT');
                 mButtonLogOut.id = 'buttonLogOut';
                 mButtonLogOut.type = 'submit';
-                mButtonLogOut.value = 'Log Out';
+                mButtonLogOut.value = buttonLogOutText;
                 header.appendChild(mButtonLogOut);
                 //Add onClick event to mButtonSignIn
                 mButtonLogOut = document.getElementById('buttonLogOut');
@@ -615,6 +658,12 @@
                 setButtonLogOut();
             }
             
+            function setButtonLogOut() {
+                var mButtonLogOut = document.getElementById('buttonLogOut');
+                mButtonLogOut.style.top = (header.getBoundingClientRect()
+                        .bottom - mButtonLogOut.offsetHeight - 7) + 'px';
+            }
+            
             function createLabelAccountSubject() {
                 var mLabelAccountSubject = document.createElement('P');
                 mLabelAccountSubject.id = 'labelAccountSubject';
@@ -624,97 +673,6 @@
                 getSubject(userID);
                 
                 setLabelAccountSubject();
-            }
-            
-            /**
-             * 
-             * @returns {undefined}
-             */
-            function setButtonSignIn() {
-                var mButtonSignIn = document.getElementById('buttonSignIn');
-                mButtonSignIn.style.top = (header.getBoundingClientRect()
-                        .bottom - mButtonSignIn.offsetHeight - 7) + 'px';
-            }            
-            
-            /**
-             * Dynamically adjusts location of text_input_password
-             * (password text box) based on size of browser.
-             */
-            function setTextInputPassword() {
-                var mTextInputPassword = document
-                        .getElementById('textInputPassword');
-                
-                var mButtonSignIn = document.getElementById('buttonSignIn');
-                
-                mTextInputPassword.style.top = (mButtonSignIn
-                        .getBoundingClientRect().top) + "px";
-                mTextInputPassword.style.left = (mButtonSignIn
-                        .getBoundingClientRect().left - mTextInputPassword
-                        .offsetWidth - 1) + "px";
-                mTextInputPassword.style.height = (mButtonSignIn.offsetHeight
-                        - 4) + 'px';
-            }
-            
-            /**
-             * Dynamically adjusts location of label_text_input_password 
-             * (label for password text box) based on size of browser.             
-             */
-            function setLabelInputPassword() {
-                var mTextInputPassword = document
-                        .getElementById('textInputPassword')
-                        .getBoundingClientRect();
-                
-                var mLabelInputPassword = document                                         
-                        .getElementById('labelInputPassword');
-                
-                mLabelInputPassword.style.left = (mTextInputPassword
-                        .left) + "px";
-                mLabelInputPassword.style.top = (mTextInputPassword.top 
-                        - mLabelInputPassword.offsetHeight - 2) + "px";
-            }            
-            
-           
-            /**
-             * Dynamically adjusts location of text_input_subject 
-             * (username text box) based on size of browser.             
-             */
-            function setTextInputSubject() {
-                var mTextInputPassword = document
-                        .getElementById('textInputPassword');
-
-                var mTextInputSubject = document
-                        .getElementById('textInputSubject');
-
-                mTextInputSubject.style.top = mTextInputPassword
-                        .getBoundingClientRect().top + "px";
-                mTextInputSubject.style.left = (mTextInputPassword
-                        .getBoundingClientRect().left - mTextInputPassword
-                        .offsetWidth - 7) + "px";
-                mTextInputSubject.style.right = (mTextInputPassword
-                        .getBoundingClientRect().right -mTextInputPassword
-                        .offsetWidth - 7) + "px";
-                mTextInputSubject.style.height = (mTextInputPassword
-                        .offsetHeight - 4) + 'px';
-            }
-
-            function setLabelInputSubject() {
-                var mTextInputSubject = document
-                        .getElementById('textInputSubject')
-                        .getBoundingClientRect();
-                
-                var mLabelInputSubject = document                                         
-                        .getElementById('labelInputSubject');
-                
-                mLabelInputSubject.style.left = (mTextInputSubject
-                        .left) + "px";
-                mLabelInputSubject.style.top = (mTextInputSubject.top 
-                        - mLabelInputSubject.offsetHeight - 2) + "px";
-            }            
-            
-            function setButtonLogOut() {
-                var mButtonLogOut = document.getElementById('buttonLogOut');
-                mButtonLogOut.style.top = (header.getBoundingClientRect()
-                        .bottom - mButtonLogOut.offsetHeight - 7) + 'px';
             }
             
             function setLabelAccountSubject() {
@@ -789,9 +747,9 @@
                     var mH1 = document.createElement('H1');
                     mCardOpeningMessage.appendChild(mH1);
                     
-                    var mTextNode = document
-                            .createTextNode(content.offsetWidth);
-                    mH1.appendChild(mTextNode);
+                    var mCardOpeningMessageTextNode = document
+                            .createTextNode(cardOpeningMessageText);
+                    mH1.appendChild(mCardOpeningMessageTextNode);
                 }
                 setCardOpeningMessage();
             }
@@ -816,7 +774,7 @@
                     mCardJoinUs.appendChild(mCardHeader);
                     
                     var mTextNodeCardHeader = document
-                            .createTextNode('Free to join!');
+                            .createTextNode(cardJoinUsText);
                     mCardHeader.appendChild(mTextNodeCardHeader);
                     
                     //formJoinUs
@@ -839,7 +797,7 @@
                             .createElement('INPUT');
                     mTextInputJoinFirstName.id = 'textInputJoinFirstName';
                     mTextInputJoinFirstName.type = 'text';
-                    mTextInputJoinFirstName.value = 'First Name';
+                    mTextInputJoinFirstName.value = textInputJoinFirstNameText;
                     addEventListenerFocusBlur(mTextInputJoinFirstName,
                             focusTextInputJoinFirstName,
                             blurTextInputJoinFirstName);
@@ -850,7 +808,7 @@
                             .createElement('INPUT');
                     mTextInputJoinLastName.id = 'textInputJoinLastName';
                     mTextInputJoinLastName.type = 'text';
-                    mTextInputJoinLastName.value = 'Last Name';
+                    mTextInputJoinLastName.value = textInputJoinLastNameText;
                     addEventListenerFocusBlur(mTextInputJoinLastName,
                             focusTextInputJoinLastName,
                             blurTextInputJoinLastName);
@@ -861,7 +819,7 @@
                             .createElement('INPUT');
                     mTextInputJoinSubject.id = 'textInputJoinSubject';
                     mTextInputJoinSubject.type = 'text';
-                    mTextInputJoinSubject.value = 'Username or Email address';
+                    mTextInputJoinSubject.value = textInputJoinSubjectText;
                     addEventListenerFocusBlur(mTextInputJoinSubject,
                             focusTextInputJoinSubject,
                             blurTextInputJoinSubject);
@@ -873,7 +831,7 @@
                     mTextInputJoinPassword.id = 'textInputJoinPassword';
                     //Will switch type when .value !=== 'Password'
                     mTextInputJoinPassword.type = 'text';
-                    mTextInputJoinPassword.value = 'Password';
+                    mTextInputJoinPassword.value = textInputJoinPasswordText;
                     addEventListenerFocusBlur(mTextInputJoinPassword,
                             focusTextInputJoinPassword,
                             blurTextInputJoinPassword);
@@ -892,7 +850,7 @@
                     var mButtonJoinUs = document.createElement('INPUT');
                     mButtonJoinUs.id = 'buttonJoinUs';
                     mButtonJoinUs.type = 'submit';
-                    mButtonJoinUs.value = 'Join Now';
+                    mButtonJoinUs.value = buttonJoinUsText;
                     mFormJoinUs.appendChild(mButtonJoinUs);
                     //Add onClick event to mButtonJoinUs
                     mButtonJoinUs = document.getElementById('buttonJoinUs');
@@ -904,7 +862,7 @@
                                 clickButtonJoinUs);
                     }
                 }
-                setCardJoinUs(mCardJoinUs, mFormJoinUs, mTextInputJoinFirstName,
+                setCardJoinUs(mCardJoinUs, mTextInputJoinFirstName,
                         mTextInputJoinLastName, mTextInputJoinSubject, 
                         mTextInputJoinPassword, mDisclaimer, mButtonJoinUs);
             }
@@ -980,7 +938,7 @@
                         + mTextInputJoinPassword.offsetHeight + 10
                         + mDisclaimer.offsetHeight + 10
                         + mButtonJoinUs.offsetHeight + 25) + "px";
-            }           
+            }
             
             function createCardAuthor() {
                 /* 
@@ -1029,15 +987,13 @@
                             .createTextNode(authorSiteExplanationText);
                     mAuthorExplanation.appendChild(mTextNodeAuthorExplanation);
 
-                    setCardAuthor(mCardAuthor, mContainerAuthorText,
-                            mAuthorCopyright, mAuthorAnchorGithubLink,
-                            mAuthorExplanation);
+                    setCardAuthor(mCardAuthor, mAuthorCopyright,
+                            mAuthorAnchorGithubLink, mAuthorExplanation);
                 }
             }                                                    
             
-            function setCardAuthor(mCardAuthor, mContainerAuthorText,
-                    mAuthorCopyright, mAuthorAnchorGithubLink,
-                    mAuthorExplanation) {
+            function setCardAuthor(mCardAuthor, mAuthorCopyright, 
+                    mAuthorAnchorGithubLink, mAuthorExplanation) {
                 mCardAuthor.style.minWidth = "241px";
                 mCardAuthor.style.width = ((content.offsetWidth / 2) - 21) 
                         + "px";
