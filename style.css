@@ -23,6 +23,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#authorCopyright  {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    position: absolute;
+}
+
+#authorAnchorGithubLink {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    position: absolute;
+}
+
+#authorExplanation {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    position: absolute;
+}
+
+#authorExplanation2 {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    position: absolute;    
+}
+
 html, body {
     margin: 0px;
     padding: 0px;
@@ -45,188 +77,8 @@ html, body {
     height: 3%;
     width: 3%;    
 }
-
-#buttonLogOut {
-    position: fixed;
-    z-index: 1;
-    background: #FFF;
-    border-top:  1px solid #E8E8E8;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-bottom: 3px solid #D4D4D4;
-    padding: 0px;
-    margin: 0px;    
-    right: 7px;
-    min-height: 25px;
-    min-width: 60px;
-    height: 3%;
-    width: 3%; 
-}
-
-#buttonJoinUs {
-    position: absolute;
-    background: #50AA50;
-    color: #FFFFFF;
-    border-top:  1px solid #E8E8E8;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-bottom: 3px solid #D4D4D4;
-    padding: 0px;
-    margin: 0px;    
-}
-
-#content {
-    position: fixed;    
-    bottom: 0px;
-    left: 0px;
-    right: 0px;    
-    background-color: #D9D9D9;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0px;
-    z-index: 0;
-}
-
-#cardJoinUs {
-    position: absolute;
-    z-index: 1;
-}
-
-#cardJoinUsImage {
-    position: absolute;
-}
-
-#cardOpeningMessage {
-    min-width: 435px;
-    text-align: center;
-    top: 0px;
-    z-index: 1;
-}
-
-.card {
-    background: #FFF;
-    border-bottom: 3px solid #D4D4D4;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-top:  1px solid #E8E8E8;
-    margin: 7px;
-    overflow: hidden;
-    padding: 0px;
-    position: absolute;
-    transition: width .2s;
-    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
-}
-
-.card h1 {
-    margin: 0px;
-    padding: 10px;
-    padding-bottom: 0px;
-}
-
-.card p {
-    margin: 0px;
-    padding: 10px;
-}
-
-#content {
-    position: fixed;    
-    bottom: 0px;
-    left: 0px;
-    right: 0px;    
-    background-color: #D9D9D9;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0px;
-    z-index: 0;
-}
-
-#cardJoinUs {
-    position: absolute;
-    z-index: 1;
-}
-
-#cardJoinUsImage {
-    position: absolute;
-}
-
-#cardOpeningMessage {
-    min-width: 435px;
-    text-align: center;
-    top: 0px;
-    z-index: 1;
-}
-
-.card {
-    background: #FFF;
-    border-bottom: 3px solid #D4D4D4;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-top:  1px solid #E8E8E8;
-    margin: 7px;
-    overflow: hidden;
-    padding: 0px;
-    position: absolute;
-    transition: width .2s;
-    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
-}
-
-.card h1 {
-    margin: 0px;
-    padding: 10px;
-    padding-bottom: 0px;
-}
-
-.card p {
-    margin: 0px;
-    padding: 10px;
-/*
- * Copyright (c) 2015, Kevin Kabatra
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer. 
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-html, body {
-    margin: 0px;
-    padding: 0px;
-    background-color: #D9D9D9;
-}
-
-
-
-#buttonSignIn {
-    position: fixed;
-    z-index: 1;
-    background: #FFF;
-    border-top:  1px solid #E8E8E8;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-bottom: 3px solid #D4D4D4;
-    padding: 0px;
-    margin: 0px;    
-    right: 7px;
-    min-height: 25px;
-    min-width: 55px;
-    height: 3%;
-    width: 3%;    
+#buttonSignIn:hover {
+    cursor: pointer;
 }
 
 #buttonLogOut {
@@ -245,10 +97,13 @@ html, body {
     height: 3%;
     width: 3%; 
 }
+#buttonLogOut:hover {
+    cursor: pointer;
+}
 
 #buttonJoinUs {
     position: absolute;
-    background: #50AA50;
+    background: #039FFF;
     color: #FFFFFF;
     border-top:  1px solid #E8E8E8;
     border-left: 2px solid #E8E8E8;
@@ -256,6 +111,9 @@ html, body {
     border-bottom: 3px solid #D4D4D4;
     padding: 0px;
     margin: 0px;    
+}
+#buttonJoinUs:hover {
+    cursor: pointer;
 }
 
 #content {
@@ -275,142 +133,12 @@ html, body {
     z-index: 1;
 }
 
-#cardJoinUsImage {
-    position: absolute;
-}
-
-#cardOpeningMessage {
-    min-width: 435px;
-    text-align: center;
-    top: 0px;
-    z-index: 1;
-}
-
-.card {
-    background: #FFF;
-    border-bottom: 3px solid #D4D4D4;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-top:  1px solid #E8E8E8;
-    margin: 7px;
-    overflow: hidden;
-    padding: 0px;
-    position: absolute;
-    transition: width .2s;
-    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
-}
-
-.card h1 {
-    margin: 0px;
-    padding: 10px;
-    padding-bottom: 0px;
-}
-
-.card p {
-    margin: 0px;
-    padding: 10px;
-/*
- * Copyright (c) 2015, Kevin Kabatra
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer. 
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-html, body {
-    margin: 0px;
-    padding: 0px;
-    background-color: #D9D9D9;
-}
-
-
-
-#buttonSignIn {
-    position: fixed;
-    z-index: 1;
-    background: #FFF;
-    border-top:  1px solid #E8E8E8;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-bottom: 3px solid #D4D4D4;
-    padding: 0px;
-    margin: 0px;    
-    right: 7px;
-    min-height: 25px;
-    min-width: 55px;
-    height: 3%;
-    width: 3%;    
-}
-
-#buttonLogOut {
-    position: fixed;
-    z-index: 1;
-    background: #FFF;
-    border-top:  1px solid #E8E8E8;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-bottom: 3px solid #D4D4D4;
-    padding: 0px;
-    margin: 0px;    
-    right: 7px;
-    min-height: 25px;
-    min-width: 60px;
-    height: 3%;
-    width: 3%; 
-}
-
-#buttonJoinUs {
-    position: absolute;
-    background: #50AA50;
-    color: #FFFFFF;
-    border-top:  1px solid #E8E8E8;
-    border-left: 2px solid #E8E8E8;
-    border-right: 2px solid #E8E8E8;
-    border-bottom: 3px solid #D4D4D4;
-    padding: 0px;
-    margin: 0px;    
-}
-
-#content {
-    position: fixed;    
-    bottom: 0px;
-    left: 0px;
-    right: 0px;    
-    background-color: #D9D9D9;
+#cardAuthor {
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0px;
-    z-index: 0;
-}
-
-#cardJoinUs {
-    position: absolute;
-    z-index: 1;
-}
-
-#cardJoinUsImage {
     position: absolute;
 }
 
 #cardOpeningMessage {
-    min-width: 435px;
     text-align: center;
     top: 0px;
     z-index: 1;
@@ -426,8 +154,8 @@ html, body {
     overflow: hidden;
     padding: 0px;
     position: absolute;
-    transition: width .2s;
-    -webkit-transition: width .2s; /*Safari 3.1 to 6.0 */
+    transition: width .0s;
+    -webkit-transition: width .0s; /*Safari 3.1 to 6.0 */
 }
 
 .card h1 {
@@ -500,7 +228,7 @@ html, body {
     top: 0px;
     left: 0px;
     right: 0px;
-    background: #50AA50;
+    background: #039FFF;
     padding: 5px 0px 5px 0px;
     border-bottom: 1px solid #CCCCCC;
     border-top:  1px solid #E8E8E8;
@@ -552,8 +280,8 @@ html, body {
     z-index: 1;
 }
 
-#imageJoinUs {
-    position: absolute;           
+#imageAuthor {
+    position: absolute;               
 }
 
 #labelInputSubject {
@@ -580,17 +308,6 @@ html, body {
     top: 2%;    
 }
 
-#logoHeader {
-    position: fixed;
-    left: .3%;
-    top: .7%;
-    z-index: 0;
-    width: 5%;
-    height: 7.7%;
-    min-width: 48px;
-    min-height: 58px;
-}
-
 #navigation_collapse {
     position: absolute;
     left: 130px;
@@ -609,6 +326,15 @@ html, body {
     width: 20px;
     height: 20px;
     visibility: visible;    
+}
+
+pre {
+    font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    position: absolute;
 }
 
 #search_bar {
