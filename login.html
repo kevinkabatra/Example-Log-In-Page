@@ -744,12 +744,13 @@
                     mCardOpeningMessage.id = 'cardOpeningMessage';
                     content.appendChild(mCardOpeningMessage);
                     
-                    var mH1 = document.createElement('H1');
-                    mCardOpeningMessage.appendChild(mH1);
+                    var mCardOpeningMessageH1 = document.createElement('H1');
+                    mCardOpeningMessage.appendChild(mCardOpeningMessageH1);
                     
                     var mCardOpeningMessageTextNode = document
                             .createTextNode(cardOpeningMessageText);
-                    mH1.appendChild(mCardOpeningMessageTextNode);
+                    mCardOpeningMessageH1
+                            .appendChild(mCardOpeningMessageTextNode);
                 }
                 setCardOpeningMessage();
             }
@@ -757,8 +758,118 @@
             function setCardOpeningMessage() {
                 var mCardOpeningMessage = document
                         .getElementById('cardOpeningMessage');
-                mCardOpeningMessage.style.width = (content.offsetWidth - 20) 
+                mCardOpeningMessage.style.width = (content.offsetWidth - 21) 
                         + "px";
+            }            
+            
+            function createCardAuthor() {
+                /* 
+                 * 435 + 7(left margin) + 7(right margin) + 2(left border) 
+                 * + 2(right border) = 453
+                 */
+                var mCardAuthor = document.createElement('DIV');
+                mCardAuthor.className ='card';
+                mCardAuthor.id = 'cardAuthor';
+                content.appendChild(mCardAuthor);
+
+                if(content.offsetWidth > 800) {
+                    var mImageAuthor = document.createElement('IMG');
+                    mImageAuthor.id = 'imageAuthor';
+                    mImageAuthor.src = 'assets/images/me.jpg';
+                    mImageAuthor.alt = 'imageAuthor';
+                    mCardAuthor.appendChild(mImageAuthor);    
+                }
+
+                var mContainerAuthorText = document.createElement('DIV');
+                mContainerAuthorText.id = 'containerAuthorText';
+                mCardAuthor.appendChild(mContainerAuthorText);
+
+                var mAuthorCopyright = document.createElement('P');
+                mAuthorCopyright.id = 'authorCopyright';
+                mContainerAuthorText.appendChild(mAuthorCopyright);
+
+                var mTextNodeAuthorCopyright = document
+                        .createTextNode(cardAuthorText);
+                mAuthorCopyright.appendChild(mTextNodeAuthorCopyright);
+
+                var mAuthorAnchorGithubLink = document.createElement('A');
+                mAuthorAnchorGithubLink.id = 'authorAnchorGithubLink';
+                mAuthorAnchorGithubLink.href = 'https://github.com/' 
+                        + 'kevinkabatra/Example-Log-In-Page';
+                mAuthorAnchorGithubLink.innerHTML =
+                        authorAnchorGithubLinkText;
+                mContainerAuthorText.appendChild(mAuthorAnchorGithubLink);
+
+                var mAuthorExplanation = document.createElement('P');
+                mAuthorExplanation.id = 'authorExplanation';
+                mContainerAuthorText.appendChild(mAuthorExplanation);
+
+                var mTextNodeAuthorExplanation = document
+                        .createTextNode(authorSiteExplanationText);
+                mAuthorExplanation.appendChild(mTextNodeAuthorExplanation);
+
+                setCardAuthor(mCardAuthor, mAuthorCopyright,
+                        mAuthorAnchorGithubLink, mAuthorExplanation);
+            }
+            
+            function setCardAuthor(mCardAuthor, mAuthorCopyright, 
+                    mAuthorAnchorGithubLink, mAuthorExplanation) {
+                mCardAuthor.style.minWidth = "241px";
+                //Was setCardAuthor called by setCardJoinUs()?
+                if(document.getElementById('cardJoinUs')) {
+                    var mCardJoinUs = document.getElementById('cardJoinUs');
+                    mCardAuthor.style.top = (document
+                            .getElementById('cardOpeningMessage').offsetHeight 
+                            + mCardJoinUs.offsetHeight + 14) + 'px';
+                    mCardAuthor.style.width = (content.offsetWidth - 21) + 'px';
+                } else {
+                    mCardAuthor.style.top = (document.getElementById(
+                            'cardOpeningMessage').offsetHeight + 7) + 'px';
+                    mCardAuthor.style.width = ((content.offsetWidth / 2) - 21) 
+                        + "px";
+                }
+                mCardAuthor.style.left = '0px';
+                
+                if(content.offsetWidth > 800) {
+                    mCardAuthor.style.height = ((content.offsetHeight 
+                        - document.getElementById('cardOpeningMessage')
+                        .offsetHeight) - 28) + "px";
+                    var mImageAuthor = document.getElementById('imageAuthor');
+                    mImageAuthor.style.width = "40%";
+                    mImageAuthor.style.height = "97%";
+                    mImageAuthor.style.bottom = '7px';
+                    mImageAuthor.style.left = '7px';
+                    mImageAuthor.style.top = "7px";
+                    
+                    /*
+                     * Minimal acceptable margin between is 7px
+                     */
+                    if(((mCardAuthor.offsetWidth - mImageAuthor.offsetWidth 
+                            - mAuthorCopyright.offsetWidth) / 2) >= 14) {
+                        var mLeft = mImageAuthor.offsetWidth 
+                            + (mCardAuthor.offsetWidth 
+                            - mImageAuthor.offsetWidth 
+                            - mAuthorCopyright.offsetWidth) / 2;
+                    } else {
+                        var mLeft = mImageAuthor.offsetWidth + 14;
+                    }
+                } else {
+                    var mLeft = 7;
+                    mCardAuthor.style.height = (mAuthorCopyright.offsetHeight 
+                            + mAuthorAnchorGithubLink.offsetHeight 
+                            + mAuthorExplanation.offsetHeight) + "px";
+                }
+                
+                mAuthorCopyright.style.top = '0px';
+                mAuthorCopyright.style.left =  mLeft + 'px';
+                
+                mAuthorAnchorGithubLink.style.top = (mAuthorCopyright
+                        .scrollHeight) + 'px';
+                mAuthorAnchorGithubLink.style.left = mLeft + 'px';
+                
+                mAuthorExplanation.style.top = (mAuthorCopyright.scrollHeight 
+                        + mAuthorAnchorGithubLink.scrollHeight) + 'px';                
+                mAuthorExplanation.style.left = mLeft + 'px';
             }            
             
             function createCardJoinUs() {
@@ -872,20 +983,22 @@
                     mTextInputJoinPassword, mDisclaimer, mButtonJoinUs) {
                 mCardJoinUs.style.minWidth = "241px";
                 
-                if(document.getElementById('cardAuthor')) {
+                var mCardAuthor = document.getElementById('cardAuthor');                
+                if((mCardAuthor.offsetWidth + mCardJoinUs.offsetWidth + 21) 
+                        < content.offsetWidth) {
                     mCardJoinUs.style.width = (content.offsetWidth 
                             - document.getElementById('cardAuthor')
                             .offsetWidth - 28) + 'px';
                 } else {
-                    mCardJoinUs.style.width = (content.offsetWidth - 14) + 'px';
+                    mCardJoinUs.style.width = (content.offsetWidth - 21) + 'px';
+                    mCardJoinUs.style.left = '0px';
                 }
                 
                 mCardJoinUs.style.textAlign = "center";
                 mCardJoinUs.style.top = (document
                         .getElementById('cardOpeningMessage')
                         .offsetHeight + 7) + 'px'; 
-                mCardJoinUs.style.left = (content.offsetWidth -
-                        mCardJoinUs.offsetWidth - 14) + "px";
+                mCardJoinUs.style.right = "0px";
 
                 mTextInputJoinFirstName.style.width = ((mCardJoinUs
                         .offsetWidth / 2) - 14) + "px";
@@ -938,109 +1051,15 @@
                         + mTextInputJoinPassword.offsetHeight + 10
                         + mDisclaimer.offsetHeight + 10
                         + mButtonJoinUs.offsetHeight + 25) + "px";
-            }
-            
-            function createCardAuthor() {
-                /* 
-                 * 435 + 7(left margin) + 7(right margin) + 2(left border) 
-                 * + 2(right border) = 453
-                 */
-                if(content.offsetWidth > 530) {
-                    var mCardAuthor = document.createElement('DIV');
-                    mCardAuthor.className ='card';
-                    mCardAuthor.id = 'cardAuthor';
-                    content.appendChild(mCardAuthor);
-
-                    if(content.offsetWidth > 800) {
-                        var mImageAuthor = document.createElement('IMG');
-                        mImageAuthor.id = 'imageAuthor';
-                        mImageAuthor.src = 'assets/images/me.jpg';
-                        mImageAuthor.alt = 'imageAuthor';
-                        mCardAuthor.appendChild(mImageAuthor);    
-                    }
-                    
-                    var mContainerAuthorText = document.createElement('DIV');
-                    mContainerAuthorText.id = 'containerAuthorText';
-                    mCardAuthor.appendChild(mContainerAuthorText);
-
-                    var mAuthorCopyright = document.createElement('P');
-                    mAuthorCopyright.id = 'authorCopyright';
-                    mContainerAuthorText.appendChild(mAuthorCopyright);
-
-                    var mTextNodeAuthorCopyright = document
-                            .createTextNode(cardAuthorText);
-                    mAuthorCopyright.appendChild(mTextNodeAuthorCopyright);
-
-                    var mAuthorAnchorGithubLink = document.createElement('A');
-                    mAuthorAnchorGithubLink.id = 'authorAnchorGithubLink';
-                    mAuthorAnchorGithubLink.href = 'https://github.com/' 
-                            + 'kevinkabatra/Example-Log-In-Page';
-                    mAuthorAnchorGithubLink.innerHTML =
-                            authorAnchorGithubLinkText;
-                    mContainerAuthorText.appendChild(mAuthorAnchorGithubLink);
-
-                    var mAuthorExplanation = document.createElement('P');
-                    mAuthorExplanation.id = 'authorExplanation';
-                    mContainerAuthorText.appendChild(mAuthorExplanation);
-
-                    var mTextNodeAuthorExplanation = document
-                            .createTextNode(authorSiteExplanationText);
-                    mAuthorExplanation.appendChild(mTextNodeAuthorExplanation);
-
-                    setCardAuthor(mCardAuthor, mAuthorCopyright,
+                
+                if((mCardAuthor.offsetWidth + mCardJoinUs.offsetWidth + 21) > content.offsetWidth) {
+                    var mAuthorCopyright = document.getElementById('authorCopyright');
+                    var mAuthorAnchorGithubLink = document.getElementById('authorAnchorGithubLink');
+                    var mAuthorExplanation = document.getElementById('authorExplanation');
+                        setCardAuthor(mCardAuthor, mAuthorCopyright, 
                             mAuthorAnchorGithubLink, mAuthorExplanation);
                 }
-            }                                                    
-            
-            function setCardAuthor(mCardAuthor, mAuthorCopyright, 
-                    mAuthorAnchorGithubLink, mAuthorExplanation) {
-                mCardAuthor.style.minWidth = "241px";
-                mCardAuthor.style.width = ((content.offsetWidth / 2) - 21) 
-                        + "px";
-                mCardAuthor.style.height = ((content.offsetHeight 
-                        - document.getElementById('cardOpeningMessage')
-                        .offsetHeight) - 28) + "px";
-                mCardAuthor.style.left = '0px';
-                mCardAuthor.style.top = (document
-                        .getElementById('cardOpeningMessage')
-                        .offsetHeight + 7) + 'px';
-                
-                if(content.offsetWidth > 800) {
-                    var mImageAuthor = document.getElementById('imageAuthor');
-                    mImageAuthor.style.width = "40%";
-                    mImageAuthor.style.height = "95%";
-                    mImageAuthor.style.bottom = '7px';
-                    mImageAuthor.style.left = '7px';
-                    mImageAuthor.style.top = "7px";
-                    
-                    /*
-                     * Minimal acceptable margin between is 7px
-                     */
-                    if(((mCardAuthor.offsetWidth - mImageAuthor.offsetWidth 
-                            - mAuthorCopyright.offsetWidth) / 2) >= 14) {
-                        var mLeft = mImageAuthor.offsetWidth 
-                            + (mCardAuthor.offsetWidth 
-                            - mImageAuthor.offsetWidth 
-                            - mAuthorCopyright.offsetWidth) / 2;
-                    } else {
-                        var mLeft = mImageAuthor.offsetWidth + 14;
-                    }
-                } else {
-                    var mLeft = (mCardAuthor.offsetWidth 
-                            - mAuthorCopyright.offsetWidth) / 2;
-                }
-                
-                mAuthorCopyright.style.top = '0px';
-                mAuthorCopyright.style.left =  mLeft + 'px';
-                
-                mAuthorAnchorGithubLink.style.top = (mAuthorCopyright
-                        .scrollHeight) + 'px';
-                mAuthorAnchorGithubLink.style.left = mLeft + 'px';
-                
-                mAuthorExplanation.style.top = (mAuthorCopyright.scrollHeight 
-                        + mAuthorAnchorGithubLink.scrollHeight) + 'px';                
-                mAuthorExplanation.style.left = mLeft + 'px';
-            }
+            }            
             
             function createConnect() {
                 console.log('createConnect called');
