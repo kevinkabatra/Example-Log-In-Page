@@ -204,10 +204,8 @@
                                         'get_ip_address.php:')>= 0):
                                 //if strings are identical, then commence auto 
                                 //login
-                                if(mXmlhttp.responseText.substr(mXmlhttp
-                                        .responseText
-                                        .indexOf('get_ip_address.php:') + 19) 
-                                        === activeSessionIpAddress) {
+                                if(mXmlhttp.responseText ===
+                                        activeSessionIpAddress) {
                                     //TODO: switch content to user profile
                                     authenticated = true;
                                     setHeaderAuthenticated(userID);
@@ -219,27 +217,27 @@
                                     setContentNonAuthenticated();
                                 }
                                 break;
+                            //Is response from get_subject.php?
                             case (mXmlhttp.responseText.indexOf(
-                                        '["subject"]=>') >= 0):
+                                        '["subjects"]=>') >= 0):
                                 //Filter mXmlhttp.responseText to get subject
                                 subject = mXmlhttp.responseText
                                         //Remove '["userID"]=>'
                                         .substr(mXmlhttp.responseText
-                                        .indexOf('["subject"]=>') + 13)
+                                        .indexOf('["subjects"]=>') + 13)
                                         //Remove 'string(?) "'
                                         .substr(mXmlhttp.responseText
                                         .substr(mXmlhttp.responseText
-                                        .indexOf('["subject"]=>') + 13)
+                                        .indexOf('["subjects"]=>') + 13)
                                         .indexOf('"') + 1)
                                         //Remove '"'
                                         .substr(0, mXmlhttp.responseText
                                         .substr(mXmlhttp.responseText
-                                        .indexOf('["subject"]=>') + 13)
+                                        .indexOf('["subjects"]=>') + 13)
                                         .substr(mXmlhttp.responseText
                                         .substr(mXmlhttp.responseText
-                                        .indexOf('["subject"]=>') + 13)
+                                        .indexOf('["subjects"]=>') + 13)
                                         .indexOf('"') + 1).indexOf('"'));
-                                
                                 var mTextNodeLabelAccountSubject = document
                                         .createTextNode(subject);
                                 document.getElementById('labelAccountSubject')
@@ -262,8 +260,8 @@
                                 xmlHttpRequest("postParameter=" 
                                     + postRequestRemoveThisSession,
                                     'http://kevinkabatra.ignorelist.com/'
-                                            + 'bizTwoBusiness/switchboard/' 
-                                            + 'switchboard.php');
+                                            + 'examples/example log in/' 
+                                            + 'switchboard/switchboard.php');
                                 break;
                             case (mXmlhttp.responseText.indexOf(
                                         'remove_active_session_' 
@@ -441,12 +439,13 @@
             
             function getIpAddress() {
                 var postRequestGetIpAddress = '['
-                        + '\'function\'=>\'getIpAddress\','
+                        + '\'function\'=>\'get_ip_address_getIpAddress\','
                         + ']';
                 xmlHttpRequest("postParameter="
                         + postRequestGetIpAddress,
                         'http://kevinkabatra.ignorelist.com/'
-                        + 'bizTwoBusiness/security/get_ip_address.php');
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
             
             function getActiveSessions($mSessionID) {
@@ -459,7 +458,8 @@
                 xmlHttpRequest("postParameter=" 
                         + postRequestGetThisActiveSession,
                         'http://kevinkabatra.ignorelist.com/'
-                        + 'bizTwoBusiness/switchboard/switchboard.php');
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
 
             function getSessionIdCookie() {
@@ -470,7 +470,8 @@
      
                 xmlHttpRequest("postParameter=" + postRequestPhpGetCookies,
                         'http://kevinkabatra.ignorelist.com/'
-                        + 'bizTwoBusiness/switchboard/switchboard.php');
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
             
             function updateSessionId() {
@@ -481,8 +482,8 @@
      
                 xmlHttpRequest("postParameter=" + mPostRequestUpdateSessionId,
                         'http://kevinkabatra.ignorelist.com/'
-                        + 'bizTwoBusiness/switchboard/switchboard.php');                
-                
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
             
             function getSubject($mUserID) {
@@ -495,7 +496,8 @@
                 xmlHttpRequest("postParameter=" 
                         + postRequestGetThisUserId,
                         'http://kevinkabatra.ignorelist.com/'
-                        + 'bizTwoBusiness/switchboard/switchboard.php');
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
         </script>                      
     <body>
@@ -717,22 +719,13 @@
                 removeChildNodesAll(content);
                 setContentSize();
                 
-                mContent = 'CONNECT'; //remove
+                mContent = 'LOG_IN_FURTHER_EXPLANATION'; //remove after testing
                 
                 switch(mContent) {
-                    case 'HOME':
+                    case 'LOG_IN_FURTHER_EXPLANATION':
+                        createLogInFurtherExplanation();
                         break;
-                    case 'PROFILE':
-                        break;
-                    case 'CONNECT':
-                        createConnect();
-                        break;
-                    case 'JOB_BOARD':
-                        break;
-                    case 'WHOLESALE':
-                        break;
-                    case 'RENTAL':
-                        break;
+                    default: break;
                 }
             }
             
@@ -1052,103 +1045,21 @@
                         + mDisclaimer.offsetHeight + 10
                         + mButtonJoinUs.offsetHeight + 25) + "px";
                 
-                if((mCardAuthor.offsetWidth + mCardJoinUs.offsetWidth + 21) > content.offsetWidth) {
-                    var mAuthorCopyright = document.getElementById('authorCopyright');
-                    var mAuthorAnchorGithubLink = document.getElementById('authorAnchorGithubLink');
-                    var mAuthorExplanation = document.getElementById('authorExplanation');
-                        setCardAuthor(mCardAuthor, mAuthorCopyright, 
-                            mAuthorAnchorGithubLink, mAuthorExplanation);
+                if((mCardAuthor.offsetWidth + mCardJoinUs.offsetWidth + 21) >
+                        content.offsetWidth) {
+                    var mAuthorCopyright = document
+                            .getElementById('authorCopyright');
+                    var mAuthorAnchorGithubLink = document
+                            .getElementById('authorAnchorGithubLink');
+                    var mAuthorExplanation = document
+                            .getElementById('authorExplanation');
+                    setCardAuthor(mCardAuthor, mAuthorCopyright, 
+                        mAuthorAnchorGithubLink, mAuthorExplanation);
                 }
             }            
             
-            function createConnect() {
-                console.log('createConnect called');
-                var mTextInputConnectMessage = document.createElement('INPUT');
-                mTextInputConnectMessage.id = 'textInputConnectMessage';
-                mTextInputConnectMessage.type = 'text';
-                content.appendChild(mTextInputConnectMessage);
+            function createLogInFurtherExplanation() {
                 
-                mTextInputConnectMessage.onkeydown = function(event) {
-                    event = event || window.event;
-                    if(event.keycode === 13 || event.which === 13) {
-                        console.log('captured enter press');
-                    }
-                };
-                
-                setConnect(mTextInputConnectMessage);
-                
-                var mDivMessagesContainer = document.createElement('DIV');
-                mDivMessagesContainer.id = 'divMessagesContainer';
-                content.appendChild(mDivMessagesContainer);
-                
-                var mCardMessage1 = document.createElement('DIV');
-                mCardMessage1.className = 'card';
-                mCardMessage1.id = 'message1';
-                mDivMessagesContainer.appendChild(mCardMessage1);
-                var mPMessage1 = document.createElement('P');
-                mCardMessage1.appendChild(mPMessage1);
-                var mTextNodeMessage1 = document.createTextNode('I received a message');
-                mPMessage1.appendChild(mTextNodeMessage1);
-                            
-                var mCardMessage2 = document.createElement('DIV');
-                mCardMessage2.className = 'card';
-                mCardMessage2.id = 'message2';
-                mDivMessagesContainer.appendChild(mCardMessage2);
-                var mPMessage2 = document.createElement('P');
-                mCardMessage2.appendChild(mPMessage2);
-                var mTextNodeMessage2 = document.createTextNode('I sent a message');
-                mPMessage2.appendChild(mTextNodeMessage2);
-                
-                var mCardMessage3 = document.createElement('DIV');
-                mCardMessage3.className = 'card';
-                mCardMessage3.id = 'message3';
-                mDivMessagesContainer.appendChild(mCardMessage3);
-                var mPMessage3 = document.createElement('P');
-                mCardMessage3.appendChild(mPMessage3);
-                var mTextNodeMessage3 = document.createTextNode('Testing Message Length:');
-                mPMessage3.appendChild(mTextNodeMessage3);
-                
-                var mCardMessage4 = document.createElement('DIV');
-                mCardMessage4.className = 'card';
-                mCardMessage4.id = 'message4';
-                mDivMessagesContainer.appendChild(mCardMessage4);
-                var mPMessage4 = document.createElement('P');
-                mCardMessage4.appendChild(mPMessage4);
-                var mTextNodeMessage4 = document.createTextNode('123456789112345678921234567931234567894123456795123456789612345679712345678981234657899');
-                mPMessage4.appendChild(mTextNodeMessage4);
-                
-                setDivMessagesContainer(mDivMessagesContainer, mCardMessage1, mCardMessage2, mCardMessage3, mCardMessage4);
-            }
-            
-            function setDivMessagesContainer(mDivMessagesContainer, mCardMessage1, mCardMessage2, mCardMessage3, mCardMessage4) {
-                mDivMessagesContainer.style.top = '7px';
-                mDivMessagesContainer.style.left = '14px';
-                mDivMessagesContainer.style.width = (content.offsetWidth 
-                        - 42) + 'px';
-                mDivMessagesContainer.style.height = '100px';
-                
-                mCardMessage1.style.top = '0px';
-                mCardMessage1.style.left = '0px';
-                
-                mCardMessage2.style.top = (document.getElementById('message1').offsetHeight + 7) + 'px';
-                mCardMessage2.style.right = '0px';
-                
-                mCardMessage3.style.top = (document.getElementById('message1').offsetHeight 
-                        + document.getElementById('message2').offsetHeight + 14) + 'px';
-                mCardMessage3.style.left = '0px';
-                
-                mCardMessage4.style.top = (document.getElementById('message1').offsetHeight 
-                        + document.getElementById('message2').offsetHeight 
-                        + document.getElementById('message3').offsetHeight + 21) + 'px';
-                mCardMessage4.style.left = '0px';
-            }
-                
-            function setConnect(mTextInputConnectMessage) {
-                mTextInputConnectMessage.style.top = (content.offsetHeight 
-                        - mTextInputConnectMessage.offsetHeight - 7) + 'px';
-                mTextInputConnectMessage.style.left = '14px';
-                mTextInputConnectMessage.style.width = (content.offsetWidth 
-                        - 42) + 'px';                
             }
         </script>
         
@@ -1165,11 +1076,12 @@
                 var textInputPassword = document
                         .getElementById('textInputPassword');
                 var encryptionParameters = [
-                    "subject=" + textInputSubject.value,
-                    "password=" + textInputPassword.value];
+                    'subject=' + textInputSubject.value,
+                    'password=' + textInputPassword.value];
                 xmlHttpRequest(encryptionParameters, 
-                        "http://kevinkabatra.ignorelist.com/" 
-                                +"bizTwoBusiness/security/authenticate.php");
+                        'http://kevinkabatra.ignorelist.com/' 
+                                + 'examples/example log in/security/' 
+                                + 'authenticate.php');
             }
             
             function clickButtonLogOut() {
@@ -1178,10 +1090,11 @@
                     + '\'cookie_name\'=>\'sessionID\','
                     + ']';
 
-                xmlHttpRequest("postParameter=" 
+                xmlHttpRequest('postParameter=' 
                         + postRequestDeleteCookie,
                         'http://kevinkabatra.ignorelist.com/'
-                        + 'bizTwoBusiness/switchboard/switchboard.php');                
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
             
             /**
@@ -1189,22 +1102,22 @@
              * @returns {undefined}
              */
             function clickButtonJoinUs() {
-                var mTextInputJoinFirstName = document
-                        .getElementById('textInputJoinFirstName');
-                var mTextInputJoinLarstName = document
-                        .getElementById('textInputJoinLastName');
-                var mTextInputJoinSubject = document
-                        .getElementById('textInputJoinSubject');
-                var mTextInputJoinPassword = document
-                        .getElementById('textInputJoinPassword');
-                var encryptionParameters = [
-                    "firstName=" + mTextInputJoinFirstName.value,
-                    "lastName=" + mTextInputJoinLarstName.value,
-                    "subject=" + mTextInputJoinSubject.value,
-                    "password=" + mTextInputJoinPassword.value];
-                xmlHttpRequest(encryptionParameters, 
-                        'http://kevinkabatra.ignorelist.com/' 
-                        + 'bizTwoBusiness/database tools/add_subject.php');
+                var postRequestAddSubject = '['
+                    + '\'function\'=>\'add_subject_addThisSubject\','
+                    + '\'firstName\'=>\'' + document.getElementById(
+                            'textInputJoinFirstName').value + '\','
+                    + '\'lastName\'=>\'' + document.getElementById(
+                            'textInputJoinLastName').value + '\','
+                    + '\'subject\'=>\'' + document.getElementById(
+                            'textInputJoinSubject').value + '\','
+                    + '\'password\'=>\'' + document.getElementById(
+                            'textInputJoinPassword').value + '\','
+                    + ']';
+                xmlHttpRequest("postParameter=" 
+                        + postRequestAddSubject,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
         </script>
         
