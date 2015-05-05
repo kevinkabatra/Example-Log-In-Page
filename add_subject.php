@@ -65,13 +65,13 @@
                 $mIpAddress = get_ip_address_getIpAddress();
 
                 //Hash validated $password
-                $mHashedPassword = hashInput($mPassword);
+                $mHashedPassword = encryption_hashInput($mPassword);
                 // Find out where the salt starts. $2y$ = 4. 4 + Cost + 1.            
                 $mStart = strrpos($mHashedPassword, "$") + 1;
                 $mSalt = substr($mHashedPassword, $mStart, 22);
 
                 //Encrypt hashed $password
-                $mEncryptedPassword = encryptInput($mHashedPassword);
+                $mEncryptedPassword = encryption_encryptInput($mHashedPassword);
 
                 //Fields and Values to send to database
                 $mSubjectPostParameter = array(
