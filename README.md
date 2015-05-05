@@ -1,5 +1,8 @@
 # Example-Log-In-Page
-Example for a log in page
+Example for a log in page. Working website hosted at:
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+http://kevinkabatra.ignorelist.com/examples/example%20log%20in/index.html
 
 Directory:
 
