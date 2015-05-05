@@ -38,7 +38,8 @@
  */
    
     include_once '../database tools/add_subject.php';
-    include_once '../log/error_logging.php';      
+    include_once '../log/error_logging.php';
+    include_once '../security/authenticate.php';
     include_once '../security/get_active_session.php';   
     include_once '../security/get_subject.php';
     include_once '../security/get_ip_address.php';
@@ -137,6 +138,11 @@
                     echo add_subject_addThisSubject(
                             $arrayPostParameter['firstName'],
                             $arrayPostParameter['lastName'],
+                            $arrayPostParameter['subject'],
+                            $arrayPostParameter['password']);
+                    break;
+                case 'authenticate_authenticateSubject':
+                    echo authenticate_authenticateSubject(
                             $arrayPostParameter['subject'],
                             $arrayPostParameter['password']);
                     break;
