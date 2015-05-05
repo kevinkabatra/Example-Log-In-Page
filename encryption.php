@@ -57,7 +57,7 @@
      * @param {string} $mSubmittedInstream - String variable that was passed
      * @returns {string} $mSubmittedInstream - Returning hashed String variable
      */
-    function hashInput($mSubmittedInstream) {
+    function encryption_hashInput($mSubmittedInstream) {
         $bcrypt_options = [
             'cost' =>12,
         ];
@@ -81,7 +81,7 @@
      * @param {string} $mSubmittedInstream - String variable that was passed
      * @returns {string} $mSubmittedInstream - Returning hashed String variable
      */
-    function encryptInput($mSubmittedInstream) {
+    function encryption_encryptInput($mSubmittedInstream) {
         $mSubmittedInstream = hash("sha512", $mSubmittedInstream, FALSE);
         return $mSubmittedInstream;
     }            
