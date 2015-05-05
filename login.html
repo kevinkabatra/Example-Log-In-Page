@@ -1086,6 +1086,10 @@
             }
             
             function clickButtonLogOut() {
+                authenticated = false;
+                userID = null;
+                sessionID = null;
+                
                 var postRequestDeleteCookie = '['
                     + '\'function\'=>\'php_cookie_deleteCookie\','
                     + '\'cookie_name\'=>\'sessionID\','
@@ -1120,7 +1124,7 @@
                         + 'examples/example log in/switchboard/' 
                         + 'switchboard.php');
             }
-        </script>
+        </script>     
         
         <script>
             /**
