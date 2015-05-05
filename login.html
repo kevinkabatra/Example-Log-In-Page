@@ -1061,8 +1061,7 @@
             function createLogInFurtherExplanation() {
                 
             }
-        </script>
-        
+        </script>               
         
         <!--Script for onClick() functions -->
         <script>
@@ -1071,17 +1070,19 @@
              * @type @exp;document@call;getElementById
              */
             function clickButtonSignIn() {
-                var textInputSubject = document
-                        .getElementById('textInputSubject');
-                var textInputPassword = document
-                        .getElementById('textInputPassword');
-                var encryptionParameters = [
-                    'subject=' + textInputSubject.value,
-                    'password=' + textInputPassword.value];
-                xmlHttpRequest(encryptionParameters, 
-                        'http://kevinkabatra.ignorelist.com/' 
-                                + 'examples/example log in/security/' 
-                                + 'authenticate.php');
+                var postRequestAuthenticateSubject = '['
+                    + '\'function\'=>\'authenticate_authenticateSubject\','
+                    + '\'subject\'=>\'' + document
+                            .getElementById('textInputSubject').value + '\','
+                    + '\'password\'=>\'' + document
+                            .getElementById('textInputPassword').value + '\','
+                    + ']';
+
+                xmlHttpRequest('postParameter=' 
+                        + postRequestAuthenticateSubject,
+                        'http://kevinkabatra.ignorelist.com/'
+                        + 'examples/example log in/switchboard/' 
+                        + 'switchboard.php');
             }
             
             function clickButtonLogOut() {
@@ -1223,6 +1224,28 @@
                     mTextInputJoinPassword.style.color = "#C3C3C3";
                 }
             }           
+        </script>
+        
+        <!--Script to repair 'Open link in new tab issue' -->
+        <script>
+            /**
+             * Open link in new tab issue: Website fails to call functions via 
+             * xmlHttpRequest() that haven't been loaded prior to calling
+             * xmlHttpRequest(). Example: setNonAuthenticated() will result in a 
+             * reference error, which in turn prevents the website from loading.
+             * 
+             * This issue was verified to be present in FireFox 37.0.2.
+             * 
+             * Opening the website via address bar navigation, and opening link
+             * in new window does not replicate the issue.
+             */
+            if(authenticated === true) {
+                setHeaderAuthenticated();
+                setContentAuthenticated();
+            } else if(!header.hasChildNodes()) {
+                setHeaderNonAuthenticated();
+                setContentNonAuthenticated();
+            }
         </script>
     </body>
 </html>
